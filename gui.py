@@ -110,7 +110,7 @@ def gui(extension_path):
 def main():
     # Configure logging
     logging.basicConfig(
-        filename='logs/penetration_testing.txt',
+        filename='logs/penetration_log_gui.txt',
         level=logging.ERROR,
         format='%(asctime)s, %(message)s'
     )
