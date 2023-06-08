@@ -13,6 +13,7 @@ from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 
+from functools import partial
 
 
 
@@ -33,11 +34,7 @@ def logs(driver, alert, result, extension_name, payload):
         logging.error(f"An error occurred: {str(e)}")
 
 
-def process_payload(payloads):
-    # Getting id of extension [start]
-    url_path = 'chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html'
-    abs_path = '/home/showloser/localhost/dynamic/Extensions/h1-replacer/h1-replacer'
-
+def process_payload(payloads,url_path, abs_path):
     options = ChromeOptions()
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
@@ -78,7 +75,7 @@ def process_payload(payloads):
 
 
 
-def gui(extension_path):
+def headless(extension_path):
     # Getting id of extension [start]
     def get_ext_id(path_to_extension):
         abs_path = path.abspath(path_to_extension)
@@ -88,7 +85,8 @@ def gui(extension_path):
         url_path = f"chrome-extension://{ext_id}/popup.html"
         return url_path, abs_path
 
-    # url_path, abs_path = get_ext_id(extension_path)
+    url_path, abs_path = get_ext_id(extension_path)
+
 
     def subset_payloads(file_path):
         payloads1 = []
@@ -112,7 +110,8 @@ def gui(extension_path):
 
     num_processes = 3  # Define the number of concurrent processes
     with Pool(num_processes) as pool:
-        pool.map(process_payload, [payloads1, payloads2, payloads3])
+        partial_process_payload = partial(process_payload, url_path=url_path, abs_path=abs_path)
+        pool.map(partial_process_payload, [payloads1, payloads2, payloads3])
 
 
 def main():
@@ -126,7 +125,7 @@ def main():
     # Run program
     with Display() as disp:
         print(disp.is_alive())
-        gui('Extensions/h1-replacer/h1-replacer')
+        headless('Extensions/h1-replacer/h1-replacer_P')
 
 
 

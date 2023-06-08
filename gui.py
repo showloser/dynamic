@@ -11,6 +11,9 @@ import logging
 from multiprocessing import Pool
 from selenium.common.exceptions import NoAlertPresentException
 
+from functools import partial
+
+
 def logs(driver, alert, result, extension_name, payload):
     # !! [Selenium cant take screenshot of alerts as it occurs outside the DOM] !!
     # driver.save_screenshot("alert_screenshot.png")
@@ -27,11 +30,7 @@ def logs(driver, alert, result, extension_name, payload):
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
 
-def process_payload(payloads):
-    # Getting id of extension [start]
-    url_path = 'chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html'
-    abs_path = '/home/showloser/localhost/dynamic/Extensions/h1-replacer/h1-replacer_P'
-
+def process_payload(payloads,url_path, abs_path):
     options = webdriver.ChromeOptions()
     options.add_experimental_option('detach', True)
     load_ext_arg = "load-extension=" + abs_path
@@ -68,6 +67,9 @@ def process_payload(payloads):
         
         # change back to popup.html to try another payload
         driver.switch_to.window(original)
+    
+    # close driver after  loop gaodim
+    driver.quit()
 
 def gui(extension_path):
     # Getting id of extension [start]
@@ -79,7 +81,7 @@ def gui(extension_path):
         url_path = f"chrome-extension://{ext_id}/popup.html"
         return url_path, abs_path
 
-    # url_path, abs_path = get_ext_id(extension_path)
+    url_path, abs_path = get_ext_id(extension_path)
 
     def subset_payloads(file_path):
         payloads1 = []
@@ -105,7 +107,8 @@ def gui(extension_path):
 
     num_processes = 3  # Define the number of concurrent processes
     with Pool(num_processes) as pool:
-        pool.map(process_payload, [payloads1,payloads2, payloads3])
+        partial_process_payload = partial(process_payload, url_path=url_path, abs_path=abs_path)
+        pool.map(partial_process_payload, [payloads1, payloads2, payloads3])
 
 def main():
     # Configure logging
