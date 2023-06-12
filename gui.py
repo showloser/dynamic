@@ -69,7 +69,7 @@ def process_payload(payloads,url_path, abs_path):
         driver.switch_to.window(original)
     
     # close driver after  loop gaodim
-    driver.quit()
+    # driver.quit()
 
 def gui(extension_path):
     # Getting id of extension [start]
@@ -105,7 +105,7 @@ def gui(extension_path):
 
 
 
-    num_processes = 3  # Define the number of concurrent processes
+    num_processes = 1  # Define the number of concurrent processes
     with Pool(num_processes) as pool:
         partial_process_payload = partial(process_payload, url_path=url_path, abs_path=abs_path)
         pool.map(partial_process_payload, [payloads1, payloads2, payloads3])
@@ -120,6 +120,8 @@ def main():
 
     # Run program
     gui('Extensions/h1-replacer/h1-replacer_P')
+    # gui('Extensions/h1-replacer/h1-replacer_v3')
+    
 
 if __name__ == '__main__':
     main()
