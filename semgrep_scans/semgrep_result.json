@@ -1,0 +1,64 @@
+{
+    "errors": [],
+    "paths": {
+        "_comment": "<add --verbose for a list of skipped paths>",
+        "scanned": [
+            "h1-replacer(v3)/contentScript.js",
+            "h1-replacer(v3)/popup.js"
+        ]
+    },
+    "results": [
+        {
+            "check_id": "STATIC_ANALYSIS.semgrep_rules.1-window_name.1b-outerHTML",
+            "end": {
+                "col": 44,
+                "line": 9,
+                "offset": 280
+            },
+            "extra": {
+                "engine_kind": "OSS",
+                "fingerprint": "7ad1603efedf8baf5688b26d0b8f00632bab99355e27a35e128f75776feed64d59249c5d29667b3c19d29e526f3b1f0ca480621ad39c5aac18daba0d0152769d_0",
+                "is_ignored": false,
+                "lines": "var a = window.name\ndocument.getElementById('id').outerHTML = a",
+                "message": "\"Source:window.name;Sink:outerHTML;\nwindow.name is vulnerable, which flows to outerHTML\"\n",
+                "metadata": {},
+                "metavars": {
+                    "$OBJECT": {
+                        "abstract_content": "document.getElementById('id')",
+                        "end": {
+                            "col": 30,
+                            "line": 9,
+                            "offset": 266
+                        },
+                        "start": {
+                            "col": 1,
+                            "line": 9,
+                            "offset": 237
+                        }
+                    },
+                    "$X": {
+                        "abstract_content": "a",
+                        "end": {
+                            "col": 6,
+                            "line": 8,
+                            "offset": 221
+                        },
+                        "start": {
+                            "col": 5,
+                            "line": 8,
+                            "offset": 220
+                        }
+                    }
+                },
+                "severity": "WARNING"
+            },
+            "path": "h1-replacer(v3)/contentScript.js",
+            "start": {
+                "col": 1,
+                "line": 8,
+                "offset": 216
+            }
+        }
+    ],
+    "version":"1.22.0"
+}
