@@ -13,3 +13,4 @@ getCurrentTab().then((tab) => {
   });
 
 })
+

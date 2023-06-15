@@ -2,7 +2,7 @@
 // *******************
 var v = window.name
 var tags = document.getElementsByTagName('h1')
-
+console.log(v)
 for (let i=0; i<tags.length; i++) {
     tags[i].innerHTML = v
 }

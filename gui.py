@@ -105,7 +105,7 @@ def gui(extension_path):
 
 
 
-    num_processes = 1  # Define the number of concurrent processes
+    num_processes = 3  # Define the number of concurrent processes
     with Pool(num_processes) as pool:
         partial_process_payload = partial(process_payload, url_path=url_path, abs_path=abs_path)
         pool.map(partial_process_payload, [payloads1, payloads2, payloads3])
