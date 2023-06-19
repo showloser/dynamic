@@ -20,6 +20,41 @@ def get_ext_id(path_to_extension):
 
 
 
+# def process_payload(payloads, url_path, abs_path):
+#     options = webdriver.ChromeOptions()
+#     options.add_experimental_option('detach', True)
+#     load_ext_arg = "load-extension=" + abs_path
+#     options.add_argument(load_ext_arg)
+#     options.add_argument("--enable-logging")
+#     driver = webdriver.Chrome('./chromedriver', options=options)
+    
+#     # get www.example.com
+#     driver.get('https://www.example.com')
+#     example = driver.current_window_handle
+
+#     # get extension popup.html
+#     driver.switch_to.new_window('tab')
+#     extension = driver.current_window_handle
+#     driver.get(url_path)
+
+
+#     for payload in payloads:
+#         driver.switch_to.window(extension)
+#         driver.refresh()
+#         driver.switch_to.window(example)
+
+#         print(payload)
+#         driver.execute_script(f"window.name = '{payload}';")
+
+#         try:
+#             # wait 2 seconds to see if alert is detected
+#             WebDriverWait(driver, 2).until(EC.alert_is_present())
+#             alert = driver.switch_to.alert
+#             alert.accept()
+#             print('+ Alert Detected +')
+#         except TimeoutException:
+#             print('= No alerts detected =')
+
 def process_payload(payloads, url_path, abs_path):
     options = webdriver.ChromeOptions()
     options.add_experimental_option('detach', True)
@@ -43,8 +78,7 @@ def process_payload(payloads, url_path, abs_path):
         driver.refresh()
         driver.switch_to.window(example)
 
-        print(payload)
-        driver.execute_script(f"window.name = '{payload}';")
+        driver.execute_script("window.location.href = arguments[0]", payload)
 
         try:
             # wait 2 seconds to see if alert is detected
@@ -87,7 +121,9 @@ def gui_window(extension_path):
 
 
 
-gui_window('Extensions/h1-replacer/h1-replacer(v3)')
+gui_window('Extensions/h1-replacer/h1-replacer(v3) location.href')
+
+# gui_window('Extensions/h1-replacer/h1-replacer(v3) window.name')
 
 
 
