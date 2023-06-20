@@ -119,7 +119,7 @@ def main():
     )
 
     # Run program
-    gui('Extensions/h1-replacer/h1-replacer_P')
+    gui('Extensions/gtranslate')
     # gui('Extensions/h1-replacer/chatgpt_h1-replacerv3')
     
 
