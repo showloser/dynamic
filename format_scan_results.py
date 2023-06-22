@@ -32,30 +32,6 @@ def interpret_json_file(file_path):
 
 
 
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Usage example

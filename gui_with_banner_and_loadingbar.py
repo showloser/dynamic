@@ -95,16 +95,20 @@ def process_payload(args,url_path, abs_path):
     driver.switch_to.window(original)
     
     for payload in payloads:
-        a = driver.find_element(By.ID, 'replacementInput')
-        a.clear()
-        a.send_keys(payload)
-        button = driver.find_element(By.ID, 'replaceButton')
-        button.click()
+
+        driver.execute_script(f'document.getElementById("replacementInput").value = `{payload}`')
+        driver.execute_script('document.getElementById("replaceButton").click()')   
+
+        # a = driver.find_element(By.ID, 'replacementInput')
+        # a.clear()
+        # a.send_keys(payload)
+        # button = driver.find_element(By.ID, 'replaceButton')
+        # button.click()
 
         driver.switch_to.window(new)
 
         try:
-            # wait 3 seconds to see if alert is detected
+            # wait 2 seconds to see if alert is detected
             WebDriverWait(driver, 2).until(EC.alert_is_present())
             alert = driver.switch_to.alert
             logs(driver, alert, 'Success', url_path, payload)
