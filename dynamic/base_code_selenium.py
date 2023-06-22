@@ -50,7 +50,12 @@ def main():
     # button.click()
 
 
-    driver.execute_script('document.getElementById("replacementInput").value = "<img src=x onerror=alert(1)>"')
+    # driver.execute_script('document.getElementById("replacementInput").value = "<img src=x onerror=alert(1)>"')
+
+
+    driver.execute_script('document.getElementById("replacementInput").value = "<img src=x onerror=document.write(1)>"')
+
+
     driver.execute_script('document.getElementById("replaceButton").click()')   
 
     driver.switch_to.window(new)
