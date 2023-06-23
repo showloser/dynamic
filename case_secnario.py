@@ -60,7 +60,6 @@ def initialize(path_to_extension):
 # Case Scenario#
 ################
 
-
 # 1) Window_name Entry Point
 def window_name(driver, abs_path, url_path, payloads):
 
@@ -94,6 +93,12 @@ def window_name(driver, abs_path, url_path, payloads):
             print('+ Alert Detected +')
         except TimeoutException:
             print('= No alerts detected =')
+
+# 2) Location_href
+def location_href(driver, abs_path, url_path, payloads):
+    print()
+
+
 
 
 
