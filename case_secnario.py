@@ -8,6 +8,7 @@ from os import path
 import hashlib
 
 from pathlib import Path
+import time
 
 def initialize(path_to_extension):
     # obtain relevant extension information'
@@ -48,7 +49,10 @@ def initialize(path_to_extension):
 
 
     # case 1:
-    window_name(driver, abs_path, url_path, payloads)
+    # window_name(driver, abs_path, url_path, payloads)
+
+    # case 2:
+    location_href(driver, abs_path, url_path, payloads)
 
 
 
@@ -68,7 +72,6 @@ def window_name(driver, abs_path, url_path, payloads):
     # set handler for example.com
     example = driver.current_window_handle
 
-    
     # get extension popup.html
     driver.switch_to.new_window('tab')
     extension = driver.current_window_handle
@@ -94,12 +97,47 @@ def window_name(driver, abs_path, url_path, payloads):
         except TimeoutException:
             print('= No alerts detected =')
 
+
+
 # 2) Location_href
 def location_href(driver, abs_path, url_path, payloads):
-    print()
+    # get www.example.com
+    driver.get('https://www.example.com')
+    # set handler for example.com
+    example = driver.current_window_handle
+
+    # get extension popup.html
+    driver.switch_to.new_window('tab')
+    extension = driver.current_window_handle
+    driver.get(url_path)
+
+    for payload in payloads:
+        # we can inject a script to change the location.href variable using query parameters
+        driver.switch_to.window(extension)
+        driver.refresh()
+        driver.switch_to.window(example)
+
+        # print(payload)
+
+
+        try:
+            # driver.execute_script(f"location.href = 'https://www.example.com/?p'{payload}")
+            driver.execute_script(f"location.href = 'https://www.example.com/?p'{payload}")
+
+            time.sleep(1)
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('+ Alert Detected +')
+            except TimeoutException:
+                print('= No alerts detected =')
+
+        except:
+            print('Payload failed')
 
 
 
 
-
-initialize('Extensions/h1-replacer/h1-replacer(v3) window.name')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
