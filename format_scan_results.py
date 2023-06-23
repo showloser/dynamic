@@ -1,6 +1,4 @@
 import json
-import pprint
-import time
 
 global taint_results
 taint_results = []
@@ -37,36 +35,6 @@ def interpret_json_file(file_path):
 # Usage example
 json_file_path = "mix_scan.json"
 interpret_json_file(json_file_path)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
