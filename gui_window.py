@@ -43,7 +43,7 @@ def process_payload(payloads, url_path, abs_path):
         driver.refresh()
         driver.switch_to.window(example)
 
-        print(payload)
+        
         driver.execute_script(f"window.name = '{payload}';")
 
         try:
@@ -87,7 +87,7 @@ def gui_window(extension_path):
 
 
 
-gui_window('Extensions/h1-replacer/h1-replacer(v3)')
+gui_window('Extensions/h1-replacer/h1-replacer(v3) window.name')
 
 
 

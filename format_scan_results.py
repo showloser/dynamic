@@ -38,7 +38,6 @@ interpret_json_file(json_file_path)
 
 
 
-
 def window_name():
     print('window.name')
 
