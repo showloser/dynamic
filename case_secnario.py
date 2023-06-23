@@ -216,8 +216,24 @@ def button_input_paradox():
         # Print the ID of the nearest button
         print("Nearest Button:", nearest_button['id'])
 
+
+
+
+    print('button_proximity')
+    button_proximity_v2()
+    print('button_proximity')
+
+    print()
+    print('button heirachy')
+    hierarchy_method()
+    print('button heirachy')
+
+
+
+
+
+# # Main Program #
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
-# button_input_paradox()
 
 button_input_paradox()
 
