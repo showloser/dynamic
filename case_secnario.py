@@ -145,6 +145,9 @@ def location_href(driver, abs_path, url_path, payloads):
 def button_input_paradox():
     from bs4 import BeautifulSoup
     def hierarchy_method():
+        # basically tries to associate which button is for the input by using the hierarchy as a guide (same parent)
+
+
         id_of_button = 'replaceButton'
         id_of_input = 'replacementInput'
         id_of_fakeButton = 'fakeButton'
@@ -188,6 +191,8 @@ def button_input_paradox():
         print(associated_button_id)
 
     def button_proximity():
+        # basically tries to associate which button is for the input by finding the nearest button to the input
+
         # Assuming 'html_source_code' contains the HTML source code
         with open('Extensions/h1-replacer/h1-replacer_testing/popup.html', 'r') as file:
             html_source = file.read()
@@ -216,6 +221,8 @@ def button_input_paradox():
         print("Nearest Button:", nearest_button['id'])
 
     def prefix_comparison():
+        # basically tries to associate which button is for which input by finding similarity in id names
+
         # Assuming 'html_source_code' contains the HTML source code
         with open('Extensions/h1-replacer/h1-replacer_testing/popup.html', 'r') as file:
             html_source = file.read()
@@ -257,8 +264,7 @@ def button_input_paradox():
         #     common_prefix_length = common_prefix_lengths[button_id]
         #     print(f"Rank {rank}: Button ID {button_id} (Common Prefix Length: {common_prefix_length})")
 
-                
-
+            
 
     prefix_comparison()
 
