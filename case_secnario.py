@@ -147,7 +147,6 @@ def button_input_paradox():
     def hierarchy_method():
         # basically tries to associate which button is for the input by using the hierarchy as a guide (same parent)
 
-
         id_of_button = 'replaceButton'
         id_of_input = 'replacementInput'
         id_of_fakeButton = 'fakeButton'
