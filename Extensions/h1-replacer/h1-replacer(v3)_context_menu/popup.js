@@ -4,16 +4,27 @@ function updateExtensionText(selectedText) {
   textElement.textContent = selectedText;
 }
 
-// Create a context menu item with a unique ID
-chrome.contextMenus.create({
-  id: "myContextMenu",
-  title: "My Context Menu",
-  contexts: ["page", "selection"],
+// Create a unique ID for the context menu item
+var contextMenuItemId = "myContextMenu";
+
+// Function to create the context menu item
+function createContextMenuItem() {
+  chrome.contextMenus.create({
+    id: contextMenuItemId,
+    title: "My Context Menu",
+    contexts: ["page", "selection"],
+  });
+}
+
+// Check if the context menu item already exists and remove it if it does
+chrome.contextMenus.remove(contextMenuItemId, () => {
+  // Create the context menu item after removing the existing one
+  createContextMenuItem();
 });
 
 // Add a listener for when the menu item is clicked
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === "myContextMenu") {
+  if (info.menuItemId === contextMenuItemId) {
     // Update the extension text with the selected text
     updateExtensionText(info.selectionText);
 

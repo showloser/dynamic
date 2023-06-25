@@ -55,7 +55,8 @@ def initialize(path_to_extension):
     # location_href(driver, abs_path, url_path, payloads)
 
 
-
+    # case 3:
+    context_menu(driver, abs_path, url_path, payloads)
 
 
 
@@ -116,8 +117,6 @@ def location_href(driver, abs_path, url_path, payloads):
         driver.refresh()
         driver.switch_to.window(example)
 
-        # print(payload)
-
 
         try:
             # driver.execute_script(f"location.href = 'https://www.example.com/?p'{payload}")
@@ -135,6 +134,55 @@ def location_href(driver, abs_path, url_path, payloads):
 
         except:
             print('Payload failed')
+
+
+
+# 3) Context_Menu
+def context_menu(driver, abs_path, url_path, payloads):
+    from selenium.webdriver.common.action_chains import ActionChains
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.common.keys import Keys
+
+
+
+    # get www.example.com
+    driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
+    # set handler for example.com
+    example = driver.current_window_handle
+
+    # get extension popup.html
+    driver.switch_to.new_window('tab')
+    extension = driver.current_window_handle
+    driver.get(url_path)
+
+    for payload in payloads:
+        # driver.switch_to.window(extension)
+        # driver.refresh()
+
+        driver.switch_to.window(example)
+
+        driver.execute_script(f'document.getElementById("h1_element").innerText = `{payload}`')
+
+        # driver.execute_script(f'document.getElementById("h1_element").innerHTML = `{payload}`')
+
+        target_element = driver.find_element(By.ID, 'h1_element')
+
+        # actions = ActionChains(driver)
+        # actions.click_and_hold(target_element).move_by_offset(1, 1).release()
+        # actions.perform()
+
+
+        # Highlight the text using JavaScript
+        driver.execute_script("arguments[0].style.backgroundColor = 'yellow';", target_element)
+
+        # Select the text using JavaScript
+        driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
+
+
+
+
+
+        input()
 
 
 
@@ -263,15 +311,18 @@ def button_input_paradox():
         #     common_prefix_length = common_prefix_lengths[button_id]
         #     print(f"Rank {rank}: Button ID {button_id} (Common Prefix Length: {common_prefix_length})")
 
-            
+        
 
-    prefix_comparison()
+
+
+
+
 
 # # Main Program #
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 
-button_input_paradox()
 
+initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 
 
 

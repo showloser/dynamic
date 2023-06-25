@@ -22,7 +22,7 @@ def get_ext_id(path_to_extension):
     url_path = f"chrome-extension://{ext_id}/popup.html"
     return url_path, abs_path
 
-url_path, abs_path = get_ext_id('Extensions/h1-replacer/h1-replacer_testing')
+url_path, abs_path = get_ext_id('Extensions/h1-replacer/h1-replacer_button_paradox')
 
 def main():
     options = webdriver.ChromeOptions()

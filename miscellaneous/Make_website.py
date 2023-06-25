@@ -15,6 +15,7 @@ def create_website(payload_file):
     html_content += '.payload-container { text-align: center; }\n'
     html_content += '.payload { padding: 10px; margin-bottom: 10px; background-color: #f0f0f0; }\n'
     html_content += '</style>\n</head>\n<body>\n'
+    html_content += '<h1 id="h1_element">This is a h1 element</h1>\n'
     html_content += '<div class="payload-container">\n'
     
     for payload in payloads:
