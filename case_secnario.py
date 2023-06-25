@@ -167,17 +167,11 @@ def context_menu(driver, abs_path, url_path, payloads):
 
         target_element = driver.find_element(By.ID, 'h1_element')
 
-        # actions = ActionChains(driver)
-        # actions.click_and_hold(target_element).move_by_offset(1, 1).release()
-        # actions.perform()
-
-
         # Highlight the text using JavaScript
         driver.execute_script("arguments[0].style.backgroundColor = 'yellow';", target_element)
 
         # Select the text using JavaScript
         driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
-
 
 
 
