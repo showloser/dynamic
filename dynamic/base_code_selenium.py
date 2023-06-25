@@ -45,16 +45,7 @@ def main():
     payload1 = '<img src=xss onerror=document.write("qwer$#@!")>'
 
 
-
-
-    # script1 = 'document.getElementById("replacementInput").value = "{}"'.format(payload1)
-    # driver.execute_script(script1)
-
     driver.execute_script(f'document.getElementById("replacementInput").value = `{payload1}`')
-
-    # driver.execute_script('document.getElementById("replacementInput").value = "' + payload1 + '"')
-
-    # driver.execute_script('document.getElementById("replacementInput").value = "<img src=x onerror=document.write(1)>"')
 
     driver.execute_script('document.getElementById("replaceButton").click()')   
 
