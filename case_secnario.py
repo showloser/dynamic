@@ -170,16 +170,25 @@ def context_menu(driver, abs_path, url_path, payloads):
         # Select the text using JavaScript
         driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
 
-        # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
-        # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
-        # Get the selected text using JavaScript
-        selected_text = driver.execute_script("return window.getSelection().toString();")
-        import pyperclip
-        # Copy the selected text to the clipboard using pyperclip
-        pyperclip.copy(selected_text)
-        print(selected_text)
-        # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
-        # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
+
+
+        actions = ActionChains(driver)
+
+        actions.context_click(target_element).perform()
+
+
+
+
+        # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
+        # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
+        # # Get the selected text using JavaScript
+        # selected_text = driver.execute_script("return window.getSelection().toString();")
+        # import pyperclip
+        # # Copy the selected text to the clipboard using pyperclip
+        # pyperclip.copy(selected_text)
+        # print(selected_text)
+        # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
+        # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
 
 
         input()
