@@ -35,4 +35,4 @@ def create_website(payload_file):
 
 
 # Create the website
-create_website('payloads/payloads.txt')
+create_website('payloads/small_payload.txt')
