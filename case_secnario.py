@@ -167,13 +167,19 @@ def context_menu(driver, abs_path, url_path, payloads):
 
         target_element = driver.find_element(By.ID, 'h1_element')
 
-        # Highlight the text using JavaScript
-        driver.execute_script("arguments[0].style.backgroundColor = 'yellow';", target_element)
-
         # Select the text using JavaScript
         driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
 
-
+        # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
+        # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
+        # Get the selected text using JavaScript
+        selected_text = driver.execute_script("return window.getSelection().toString();")
+        import pyperclip
+        # Copy the selected text to the clipboard using pyperclip
+        pyperclip.copy(selected_text)
+        print(selected_text)
+        # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
+        # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
 
 
         input()
