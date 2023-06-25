@@ -40,7 +40,7 @@ function modifyH1Elements() {
       const h1Elements = document.getElementsByTagName("h1");
 
       for (let i = 0; i < h1Elements.length; i++) {
-        h1Elements[i].textContent = message.text;
+        h1Elements[i].innerHTML = message.text;
       }
     }
   });
