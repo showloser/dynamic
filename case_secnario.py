@@ -56,9 +56,9 @@ def initialize(path_to_extension):
 
 
     # case 3:
-    context_menu(driver, abs_path, url_path, payloads)
+    # context_menu(driver, abs_path, url_path, payloads)
 
-
+    test(driver, abs_path, url_path, payloads)
 
 ################
 # Case Scenario#
@@ -176,7 +176,7 @@ def context_menu(driver, abs_path, url_path, payloads):
 
         actions.context_click(target_element).perform()
 
-
+        actions.sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.RETURN).perform()
 
 
 
@@ -200,6 +200,37 @@ def context_menu(driver, abs_path, url_path, payloads):
         input()
 
 
+
+def test(driver, abs_path, url_path, payloads):
+    from selenium.webdriver.common.keys import Keys
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.common.action_chains import ActionChains
+
+
+
+
+    # get www.example.com
+    driver.get('https://www.example.com')
+    # set handler for example.com
+    example = driver.current_window_handle
+
+    # get extension popup.html
+    driver.switch_to.new_window('tab')
+    extension = driver.current_window_handle
+    driver.get(url_path)
+
+    target_element = driver.find_element(By.ID, 'replacementInput')
+    target_element.send_keys("Example Text")
+
+    actions = ActionChains(driver)
+    actions.context_click(target_element).perform()
+
+    import keyboard
+    keyboard.press('down')
+    keyboard.release('down')
+
+
+    input()
 
 
 
@@ -334,10 +365,10 @@ def button_input_paradox():
 
 
 # # Main Program #
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
+initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 
 
-initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 
 
 
