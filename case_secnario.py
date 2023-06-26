@@ -179,6 +179,12 @@ def context_menu(driver, abs_path, url_path, payloads):
 
 
 
+
+
+
+
+
+
         # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
         # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
         # # Get the selected text using JavaScript
