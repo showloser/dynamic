@@ -143,8 +143,7 @@ def context_menu(driver, abs_path, url_path, payloads):
     from selenium.webdriver.common.by import By
     from selenium.webdriver.common.keys import Keys
 
-    import keyboard
-
+    from pynput.keyboard import Controller, Key
 
 
     # get www.example.com
@@ -178,8 +177,22 @@ def context_menu(driver, abs_path, url_path, payloads):
 
         actions.context_click(target_element).perform()
 
+        keyboard = Controller()
 
-        keyboard.press('down')
+
+        for _ in range(6):  
+            # Press the arrow key down
+            keyboard.press(Key.down)
+
+            # Release the arrow key
+            keyboard.release(Key.down)
+
+
+        # Press the Enter key
+        keyboard.press(Key.enter)
+
+        # Release the Enter key
+        keyboard.release(Key.enter)
 
 
 
@@ -198,8 +211,7 @@ def context_menu(driver, abs_path, url_path, payloads):
         # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
 
 
-        input()
-
+    time.sleep(1)
 
 
 def test(driver, abs_path, url_path, payloads):
