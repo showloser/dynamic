@@ -56,9 +56,9 @@ def initialize(path_to_extension):
 
 
     # case 3:
-    context_menu(driver, abs_path, url_path, payloads)
+    # context_menu(driver, abs_path, url_path, payloads)
 
-    # test(driver, abs_path, url_path, payloads)
+    test(driver, abs_path, url_path, payloads)
 
 ################
 # Case Scenario#
@@ -365,10 +365,10 @@ def button_input_paradox():
 
 
 # # Main Program #
-# initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
+initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 
 
-initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 
 
 
