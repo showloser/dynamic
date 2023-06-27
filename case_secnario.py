@@ -232,7 +232,6 @@ def test(driver, abs_path, url_path, payloads):
 
     input()
 
-    print('ca')
 
 
 def button_input_paradox():
