@@ -56,9 +56,9 @@ def initialize(path_to_extension):
 
 
     # case 3:
-    # context_menu(driver, abs_path, url_path, payloads)
+    context_menu(driver, abs_path, url_path, payloads)
 
-    test(driver, abs_path, url_path, payloads)
+    # test(driver, abs_path, url_path, payloads)
 
 ################
 # Case Scenario#
@@ -143,6 +143,8 @@ def context_menu(driver, abs_path, url_path, payloads):
     from selenium.webdriver.common.by import By
     from selenium.webdriver.common.keys import Keys
 
+    import keyboard
+
 
 
     # get www.example.com
@@ -176,9 +178,8 @@ def context_menu(driver, abs_path, url_path, payloads):
 
         actions.context_click(target_element).perform()
 
-        actions.sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.RETURN).perform()
 
-
+        keyboard.press('down')
 
 
 
@@ -363,10 +364,10 @@ def button_input_paradox():
 
 
 # # Main Program #
-initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
+# initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 
 
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 
 
 
