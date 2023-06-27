@@ -1,0 +1,1 @@
+2023-06-27 16:31:00,266, 2023-06-27 16:31:00, Success, CRITICAL, chrome-extension://doodempmapclfbmhppjpoeheilibmcha/popup.html, 1, <img src=xss onerror=alert(1)>
