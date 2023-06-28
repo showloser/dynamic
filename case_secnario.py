@@ -141,8 +141,6 @@ def location_href(driver, abs_path, url_path, payloads):
 def context_menu(driver, abs_path, url_path, payloads):
     from selenium.webdriver.common.action_chains import ActionChains
     from selenium.webdriver.common.by import By
-    from selenium.webdriver.common.keys import Keys
-
     from pynput.keyboard import Controller, Key
 
 
@@ -157,61 +155,42 @@ def context_menu(driver, abs_path, url_path, payloads):
     driver.get(url_path)
 
     for payload in payloads:
-        # driver.switch_to.window(extension)
-        # driver.refresh()
-
         driver.switch_to.window(example)
-
         driver.execute_script(f'document.getElementById("h1_element").innerText = `{payload}`')
-
-        # driver.execute_script(f'document.getElementById("h1_element").innerHTML = `{payload}`')
 
         target_element = driver.find_element(By.ID, 'h1_element')
 
         # Select the text using JavaScript
         driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
 
-
-
+        # perform right click to open context menu
         actions = ActionChains(driver)
-
         actions.context_click(target_element).perform()
 
+        # navigate to extension context menu option
         keyboard = Controller()
-
-
         for _ in range(6):  
             # Press the arrow key down
             keyboard.press(Key.down)
-
             # Release the arrow key
             keyboard.release(Key.down)
 
-
         # Press the Enter key
         keyboard.press(Key.enter)
-
         # Release the Enter key
         keyboard.release(Key.enter)
 
 
+        try:
+            # wait 2 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('+ Alert Detected +')
+        except TimeoutException:
+            print('= No alerts detected =')
 
-
-
-
-        # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
-        # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
-        # # Get the selected text using JavaScript
-        # selected_text = driver.execute_script("return window.getSelection().toString();")
-        # import pyperclip
-        # # Copy the selected text to the clipboard using pyperclip
-        # pyperclip.copy(selected_text)
-        # print(selected_text)
-        # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
-        # # COPY THE CURRENT SELECTED TEXT AND PRINT IT TO TERMINAL#
-
-
-    time.sleep(1)
+    time.sleep(2)
 
 
 def test(driver, abs_path, url_path, payloads):
@@ -379,10 +358,11 @@ def button_input_paradox():
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 
 
-initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 
 
 
+initialize('Extensions/h1-replacer/CONTEXT_MENU')
 
 
 
