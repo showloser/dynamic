@@ -36,76 +36,75 @@ def get_ext_id(path_to_extension):
 
 
 
-while True:
-    with Display() as disp:
+with Display() as disp:
 
-        # payloads = payloads('payloads/small_payload.txt')
-        # url_path, abs_path = get_ext_id('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+    # payloads = payloads('payloads/small_payload.txt')
+    # url_path, abs_path = get_ext_id('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 
-        print(disp.is_alive())
-        print(disp.display)
-        # options = ChromeOptions()
-        # options.add_argument("--disable-dev-shm-usage")
-        # options.add_argument("--no-sandbox")
-        # load_ext_arg = "load-extension=" + abs_path
-        # options.add_argument(load_ext_arg)
-        # driver = Chrome(service=Service(), options=options)
-
-
-
-        #     # get www.example.com
-        # driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
-        # # set handler for example.com
-        # example = driver.current_window_handle
-
-        # # get extension popup.html
-        # driver.switch_to.new_window('tab')
-        # extension = driver.current_window_handle
-        # driver.get(url_path)
-
-        # for payload in payloads:
-        #     print(payload)
-        #     # driver.switch_to.window(extension)
-        #     # driver.refresh()
-
-        #     driver.switch_to.window(example)
-
-        #     driver.execute_script(f'document.getElementById("h1_element").innerText = `{payload}`')
-
-        #     # driver.execute_script(f'document.getElementById("h1_element").innerHTML = `{payload}`')
-
-        #     target_element = driver.find_element(By.ID, 'h1_element')
-
-        #     # Select the text using JavaScript
-        #     driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
+    print(disp.is_alive())
+    print(disp.display)
+    # options = ChromeOptions()
+    # options.add_argument("--disable-dev-shm-usage")
+    # options.add_argument("--no-sandbox")
+    # load_ext_arg = "load-extension=" + abs_path
+    # options.add_argument(load_ext_arg)
+    # driver = Chrome(service=Service(), options=options)
 
 
 
-        #     actions = ActionChains(driver)
+    #     # get www.example.com
+    # driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
+    # # set handler for example.com
+    # example = driver.current_window_handle
 
-        #     actions.context_click(target_element).perform()
+    # # get extension popup.html
+    # driver.switch_to.new_window('tab')
+    # extension = driver.current_window_handle
+    # driver.get(url_path)
 
-        #     # keyboard = Controller()
+    # for payload in payloads:
+    #     print(payload)
+    #     # driver.switch_to.window(extension)
+    #     # driver.refresh()
+
+    #     driver.switch_to.window(example)
+
+    #     driver.execute_script(f'document.getElementById("h1_element").innerText = `{payload}`')
+
+    #     # driver.execute_script(f'document.getElementById("h1_element").innerHTML = `{payload}`')
+
+    #     target_element = driver.find_element(By.ID, 'h1_element')
+
+    #     # Select the text using JavaScript
+    #     driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
 
 
-        #     # for _ in range(6):  
-        #     #     # Press the arrow key down
-        #     #     keyboard.press(Key.down)
 
-        #     #     # Release the arrow key
-        #     #     keyboard.release(Key.down)
+    #     actions = ActionChains(driver)
 
+    #     actions.context_click(target_element).perform()
 
-        #     # # Press the Enter key
-        #     # keyboard.press(Key.enter)
-
-        #     # # Release the Enter key
-        #     # keyboard.release(Key.enter)
+    #     # keyboard = Controller()
 
 
-            
+    #     # for _ in range(6):  
+    #     #     # Press the arrow key down
+    #     #     keyboard.press(Key.down)
+
+    #     #     # Release the arrow key
+    #     #     keyboard.release(Key.down)
 
 
-        time.sleep(1)
+    #     # # Press the Enter key
+    #     # keyboard.press(Key.enter)
+
+    #     # # Release the Enter key
+    #     # keyboard.release(Key.enter)
+
+
+        
+
+
+    time.sleep(1)
 
 
