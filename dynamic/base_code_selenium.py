@@ -22,7 +22,9 @@ def get_ext_id(path_to_extension):
     url_path = f"chrome-extension://{ext_id}/popup.html"
     return url_path, abs_path
 
-url_path, abs_path = get_ext_id('Extensions/h1-replacer/h1-replacer_button_paradox')
+url_path, abs_path = get_ext_id('Extensions/h1-replacer/CONTEXT_MENU')
+
+# url_path, abs_path = get_ext_id('Extensions/h1-replacer/h1-replacer_P')
 
 def main():
     options = webdriver.ChromeOptions()
@@ -39,38 +41,11 @@ def main():
     new = driver.current_window_handle
 
     driver.get('https://www.example.com')
-    driver.switch_to.window(original)
 
-    payload = '<img src=xss onerror=alert(1)>'
-    payload1 = '<img src=xss onerror=document.write("qwer$#@!")>'
-
-
-    driver.execute_script(f'document.getElementById("replacementInput").value = `{payload1}`')
-
-    driver.execute_script('document.getElementById("replaceButton").click()')   
-
-    driver.switch_to.window(new)
 
 
 
 
 main()
-
-
-
-
-# def baseline():
-#     options = webdriver.ChromeOptions()
-#     options.add_experimental_option('detach', True)
-#     load_ext_arg = "load-extension=" + abs_path
-#     options.add_argument(load_ext_arg)
-#     options.add_argument("--enable-logging")
-#     driver = webdriver.Chrome('./chromedriver', options=options)
-
-#     driver.get(url_path)
-#     clickable_elements = driver.find_elements_by_xpath("//a|//button")
-#     for element in clickable_elements:
-#         element.click()
-
 
 

@@ -5,5 +5,12 @@
   "permissions": ["contextMenus", "activeTab", "scripting"],
   "action": {
     "default_popup": "popup.html"
-  }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
 }
