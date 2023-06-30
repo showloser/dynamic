@@ -5,6 +5,11 @@
     "permissions": ["contextMenus", "activeTab", "scripting"],
     "action": {
       "default_popup": "popup.html"
-    }
+    },
+    "host_permissions": [
+      "http://*/*",
+      "https://*/*",
+      "file:///*"
+    ]
   }
   

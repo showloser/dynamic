@@ -39,8 +39,9 @@ function updateExtensionText(selectedText) {
     });
   }
   
-  // Inject the content script to the current tab
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+ // Inject the content script to the current tab
+  chrome.tabs.query({ active: false, currentWindow: true }, (tabs) => {
+    console.log(tabs)
     chrome.scripting.executeScript({
       target: { tabId: tabs[0].id },
       function: modifyH1Elements,
