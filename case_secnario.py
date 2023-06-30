@@ -145,7 +145,8 @@ def context_menu(driver, abs_path, url_path, payloads):
 
 
     # get www.example.com
-    driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
+    # driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
+    driver.get('https://www.example.com')
     # set handler for example.com
     example = driver.current_window_handle
 
@@ -328,7 +329,6 @@ def button_input_paradox():
 
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 
-initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menuERROR')
 
 
 
