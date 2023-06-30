@@ -145,8 +145,7 @@ def context_menu(driver, abs_path, url_path, payloads):
 
 
     # get www.example.com
-    # driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
-    driver.get('https://www.example.com')
+    driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
     # set handler for example.com
     example = driver.current_window_handle
 
