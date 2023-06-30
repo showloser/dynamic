@@ -143,12 +143,6 @@ def context_menu(driver, abs_path, url_path, payloads):
     from selenium.webdriver.common.by import By
     from pynput.keyboard import Controller, Key
 
-    # driver.get(url_path)
-    # extension = driver.current_window_handle
-
-    # driver.switch_to.new_window('tab')
-    # example = driver.current_window_handle
-    # driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
 
     # get www.example.com
     driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
