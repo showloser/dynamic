@@ -237,15 +237,13 @@ def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
             driver.switch_to.window(extension)
             driver.refresh()
 
-            driver.execute_script("document.getElementById('entryPoint').value = 'title';")
+            driver.execute_script("document.getElementById('entryPoint').value = '2';")
             driver.execute_script("document.getElementById('submit').click();")
 
             driver.switch_to.window(example)
-        
-
             try:
-                # wait 2 seconds to see if alert is detected
-                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                # wait 5 seconds to see if alert is detected
+                WebDriverWait(driver, 5).until(EC.alert_is_present())
                 alert = driver.switch_to.alert
                 alert.accept()
                 print('+ Alert Detected +')
