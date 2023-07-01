@@ -193,6 +193,16 @@ def context_menu(driver, abs_path, url_path, payloads):
     time.sleep(2)
 
 
+# 4) onConnect (Hvt do)
+def onConnect(driver,abs_path, url_path, paylaods):
+    print('in progress')
+    payload = '''
+    const extId = "lghkoafcpkdkfgmdfobfcdcgeijohgnj";
+    const port = chrome.runtime.connect(extId, { name: "content-script" });
+    port.postMessage({ action: "activateExtension" });
+    '''
+
+
 
 def button_input_paradox():
     from bs4 import BeautifulSoup
