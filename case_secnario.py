@@ -56,9 +56,15 @@ def initialize(path_to_extension):
 
 
     # case 3:
-    context_menu(driver, abs_path, url_path, payloads)
+    # context_menu(driver, abs_path, url_path, payloads)
 
-    # test(driver, abs_path, url_path, payloads)
+    # case 4: (still doing)
+
+
+    # case 5: 
+    chromeTabsQuery(driver, abs_path, url_path, payloads)
+
+
 
 ################
 # Case Scenario#
@@ -202,6 +208,62 @@ def onConnect(driver,abs_path, url_path, paylaods):
     port.postMessage({ action: "activateExtension" });
     '''
 
+# 5) chromeTabsQuery
+def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
+    properties = ['sessionId', 'pendingUrl', 'title', 'url']
+
+    def chromeTabQuery_title():
+        # Case Secnario for chromeTabQuery_Title
+
+        # get www.example.com
+        driver.get('https://www.example.com')
+        # set handler for example.com
+        example = driver.current_window_handle
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+
+
+        for payload in payloads:
+            
+            # change to example.com to change document.title property
+            driver.switch_to.window(example)
+            driver.refresh()
+            driver.execute_script(f'document.title = `{payload}`;')
+
+            # change to extension:
+            driver.switch_to.window(extension)
+            driver.refresh()
+
+            driver.execute_script("document.getElementById('entryPoint').value = 'title';")
+            driver.execute_script("document.getElementById('submit').click();")
+
+            driver.switch_to.window(example)
+        
+
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('+ Alert Detected +')
+            except TimeoutException:
+                print('= No alerts detected =')
+
+
+
+
+
+    chromeTabQuery_title()
+
+
+
+
+
+
+
 
 
 def button_input_paradox():
@@ -334,9 +396,8 @@ def button_input_paradox():
 
 # # Main Program #
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-
-
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 
 
 
