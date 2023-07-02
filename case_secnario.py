@@ -210,7 +210,7 @@ def onConnect(driver,abs_path, url_path, paylaods):
 
 # 5) chromeTabsQuery
 def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
-    properties = ['sessionId', 'pendingUrl', 'title', 'url']
+    properties = ['favIconUrl', 'sessionId', 'title', 'url']
 
     def chromeTabQuery_title():
         # Case Secnario for chromeTabQuery_Title
@@ -270,7 +270,7 @@ def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
             # change to example.com to change url property
             driver.switch_to.window(example)
             # driver.execute_script(f"location.href = 'https://www.example.com/?p{payload}'")
-            driver.execute_script("location.href = 'https://www.example.com/?p;alert(1);//#'")
+            driver.execute_script(f"location.href = 'https://www.example.com/?p={payload}'")
 
 
             # change to extension:
@@ -290,12 +290,53 @@ def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
             except TimeoutException:
                 print('= No alerts detected =')
 
+    def chromeTabQuery_favIconUrl():
+
+        def changeFavIconUrl(driver):
+            # remove current favIconUrl
+            driver.execute_script("""
+            var linkElement = document.querySelector('link[rel="icon"]');
+            if (linkElement) {
+            linkElement.parentNode.removeChild(linkElement);
+            }
+            """)
+
+
+
+        # get www.example.com
+        driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
+        # set handler for example.com
+        example = driver.current_window_handle
+        # add a default favIconUrl
+        driver.execute_script("""
+        var link = document.createElement('link');
+        link.type = 'image/jpg';
+        link.rel = 'icon';
+        link.href = '<123>.png';
+        document.head.appendChild(link);
+        """)
+
+
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+
+
+
+
+
+
 
 
     # case 1 title:
     # chromeTabQuery_title()
     # case 2 url:
     # chromeTabQuery_url()
+    # case 3 favIconUrl()
+    chromeTabQuery_favIconUrl()
+
 
 
 
