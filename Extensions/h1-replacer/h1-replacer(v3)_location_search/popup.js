@@ -13,9 +13,9 @@ function toDo(tab) {
     }
   }
   async function getCurrentTab() {
-    let queryOptions = { active: true, currentWindow: true };
+    let queryOptions = { active: false, currentWindow: true };
     let [tab] = await chrome.tabs.query(queryOptions);
-    // console.log(tab)
+    console.log(tab)
     return tab;
   }
   
