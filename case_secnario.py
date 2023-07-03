@@ -426,8 +426,10 @@ def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
     chromeTabQuery_favIconUrl()
 
 
-
-
+# 6) location.search
+def locationSearch(driver, abs_path, url_path, payloads):
+    initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
+    
 
 
 
@@ -565,7 +567,7 @@ def button_input_paradox():
 # # Main Program #
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 
 
 
