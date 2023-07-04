@@ -27,6 +27,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === contextMenuItemId) {
     // Update the extension text with the selected text
     updateExtensionText(info.selectionText);
+    console.log("INFO: ", info)
+    console.log("TAB: ", tab)
 
     // Send a message to the background script to modify the <h1> elements
     chrome.runtime.sendMessage({ text: info.selectionText });

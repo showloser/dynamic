@@ -36,7 +36,8 @@ def initialize(path_to_extension):
         return payload_array
 
     url_path, abs_path = get_ext_id(path_to_extension)
-    payloads = payloads('payloads/small_payload.txt')
+    # payloads = payloads('payloads/small_payload.txt')
+    payloads = payloads('payloads/pearlyn_paylaod.txt')
 
     # initialize selenium and load extension
     options = webdriver.ChromeOptions()
@@ -57,7 +58,7 @@ def initialize(path_to_extension):
 
 
     # case 3:
-    # context_menu(driver, abs_path, url_path, payloads)
+    context_menu(driver, abs_path, url_path, payloads)
 
     # case 4: (still doing)
 
@@ -66,7 +67,7 @@ def initialize(path_to_extension):
     # chromeTabsQuery(driver, abs_path, url_path, payloads)
 
     # case 6:
-    locationSearch(driver, abs_path, url_path, payloads)
+    # locationSearch(driver, abs_path, url_path, payloads)
 
 
 
@@ -90,13 +91,13 @@ def window_name(driver, abs_path, url_path, payloads):
 
     for payload in payloads:
         # since window.name is obtained from the website url, we will inject javascript to change the window.name
+        driver.switch_to.window(example)
+
+        driver.execute_script(f'window.name = `{payload}`;')
+
         driver.switch_to.window(extension)
         driver.refresh()
         driver.switch_to.window(example)
-
-        print(payload)
-
-        driver.execute_script(f'window.name = `{payload}`;')
 
         try:
             # wait 2 seconds to see if alert is detected
@@ -145,58 +146,207 @@ def location_href(driver, abs_path, url_path, payloads):
 
 # 3) Context_Menu
 def context_menu(driver, abs_path, url_path, payloads):
-    from selenium.webdriver.common.action_chains import ActionChains
-    from selenium.webdriver.common.by import By
-    from pynput.keyboard import Controller, Key
+    # entry points:
+    # 1) Selection Text
+    # 2) Link Url 
+    # 3) Src Url
+    # 4) frame Url
+    # 5) Page Url
+
+    def context_menu_selectionText():
+        from selenium.webdriver.common.action_chains import ActionChains
+        from selenium.webdriver.common.by import By
+        from pynput.keyboard import Controller, Key
+
+        # get www.example.com
+        driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
+        # set handler for example.com
+        example = driver.current_window_handle
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+
+        for payload in payloads:
+            driver.switch_to.window(example)
+            driver.execute_script(f'document.getElementById("h1_element").innerText = `{payload}`')
+
+            target_element = driver.find_element(By.ID, 'h1_element')
+
+            # Select the text using JavaScript
+            driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
+
+            # perform right click to open context menu
+            actions = ActionChains(driver)
+            actions.context_click(target_element).perform()
+
+            # navigate to extension context menu option
+            keyboard = Controller()
+            for _ in range(6):  
+                # Press the arrow key down
+                keyboard.press(Key.down)
+                # Release the arrow key
+                keyboard.release(Key.down)
+
+            # Press the Enter key
+            keyboard.press(Key.enter)
+            # Release the Enter key
+            keyboard.release(Key.enter)
 
 
-    # get www.example.com
-    driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
-    # set handler for example.com
-    example = driver.current_window_handle
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('+ Alert Detected +')
+            except TimeoutException:
+                print('= No alerts detected =')
 
-    # get extension popup.html
-    driver.switch_to.new_window('tab')
-    extension = driver.current_window_handle
-    driver.get(url_path)
+        time.sleep(2)
 
-    for payload in payloads:
-        driver.switch_to.window(example)
-        driver.execute_script(f'document.getElementById("h1_element").innerText = `{payload}`')
+    def context_menu_selectionText_headless():
+        from pyvirtualdisplay.display import Display
+        from os import path
+        import hashlib
+        import time
 
-        target_element = driver.find_element(By.ID, 'h1_element')
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver import ActionChains, Chrome, ChromeOptions, Keys
+        from selenium.webdriver.support.wait import WebDriverWait
+        from selenium.webdriver import Chrome, ChromeOptions
+        from selenium.webdriver.chrome.service import Service
 
-        # Select the text using JavaScript
-        driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
+        import subprocess
 
-        # perform right click to open context menu
-        actions = ActionChains(driver)
-        actions.context_click(target_element).perform()
+        def payloads(path_to_payload):
+            payload_array = []
+            try:
+                with open(path_to_payload, 'r') as file:
+                    # Read the contents of the file
+                    for line in file:
+                        payload_array.append(line)
+            except FileNotFoundError:
+                print("File not found.")
+            except IOError:
+                print("An error occurred while reading the file.")
 
-        # navigate to extension context menu option
-        keyboard = Controller()
-        for _ in range(6):  
-            # Press the arrow key down
-            keyboard.press(Key.down)
-            # Release the arrow key
-            keyboard.release(Key.down)
+            return payload_array
 
-        # Press the Enter key
-        keyboard.press(Key.enter)
-        # Release the Enter key
-        keyboard.release(Key.enter)
+        def get_ext_id(path_to_extension):
+            abs_path = path.abspath(path_to_extension)
+            m = hashlib.sha256()
+            m.update(abs_path.encode("utf-8"))
+            ext_id = "".join([chr(int(i, base=16) + 97) for i in m.hexdigest()][:32])
+            url_path = f"chrome-extension://{ext_id}/popup.html"
+            return url_path, abs_path
+            
+        with Display() as disp:
+
+            payloads = payloads('payloads/small_payload.txt')
+            url_path, abs_path = get_ext_id('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+
+            print(disp.is_alive())
+            print(disp.display)
+            options = ChromeOptions()
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--no-sandbox")
+            load_ext_arg = "load-extension=" + abs_path
+            options.add_argument(load_ext_arg)
+            driver = Chrome(service=Service(), options=options)
+
+            # get www.example.com
+            driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
+            # set handler for example.com
+            example = driver.current_window_handle
+
+            # get extension popup.html
+            driver.switch_to.new_window('tab')
+            extension = driver.current_window_handle
+            driver.get(url_path)
+            driver.save_screenshot('ss.png')
+            time.sleep(2)
+
+            for payload in payloads:
+                print(payload)
+                # driver.switch_to.window(extension)
+                # driver.refresh()
+
+                driver.switch_to.window(example)
+
+                driver.execute_script(f'document.getElementById("h1_element").innerText = `{payload}`')
+                target_element = driver.find_element(By.ID, 'h1_element')
+
+                # Select the text using JavaScript
+                driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
 
 
-        try:
-            # wait 2 seconds to see if alert is detected
-            WebDriverWait(driver, 2).until(EC.alert_is_present())
-            alert = driver.switch_to.alert
-            alert.accept()
-            print('+ Alert Detected +')
-        except TimeoutException:
-            print('= No alerts detected =')
+                actions = ActionChains(driver)
+                actions.context_click(target_element).perform()
 
-    time.sleep(2)
+
+                driver.save_screenshot('ss.png')
+                time.sleep(2)
+
+
+                for _ in range(6):
+                    subprocess.call(['xdotool', 'key', 'Down'])
+
+                # Simulate pressing the "Enter" key
+                subprocess.call(['xdotool', 'key', 'Return'])
+
+                try:
+                    # wait 2 seconds to see if alert is detected
+                    WebDriverWait(driver, 2).until(EC.alert_is_present())
+                    alert = driver.switch_to.alert
+                    alert.accept()
+                    print('+ Alert Detected +')
+                except TimeoutException:
+                    print('= No alerts detected =')
+
+
+                driver.switch_to.window(extension)
+                driver.save_screenshot('ss.png')
+                time.sleep(1)
+
+
+                driver.switch_to.window(example)
+                driver.save_screenshot('ss.png')
+                time.sleep(1)
+     
+            
+    def context_menu_link_url():
+        # get www.example.com
+        driver.get('file:////home/showloser/localhost/dynamic/test.html')
+        # set handler for example.com
+        example = driver.current_window_handle
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+
+        
+        # for link url, inject our payload into the link.
+        
+    
+    context_menu_link_url()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # 4) onConnect (Hvt do)
@@ -289,7 +439,6 @@ def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
                 print('+ Alert Detected +')
             except TimeoutException:
                 print('= No alerts detected =')
-
 
     def chromeTabQuery_favIconUrl():
 
@@ -421,8 +570,8 @@ def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
     # chromeTabQuery_title()
     # case 2 url:
     # chromeTabQuery_url()
-    # case 3 favIconUrl()
-    chromeTabQuery_favIconUrl()
+    # case 3 favIconUrl
+    # chromeTabQuery_favIconUrl()
 
 
 # 6) location.search
@@ -467,8 +616,9 @@ def locationSearch(driver, abs_path, url_path, payloads):
 
 
 # # Main Program #
-initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
+# initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 
@@ -479,119 +629,7 @@ initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 
 
 
-## HEADLESS CONTEXT_MENUS
-def headless4ContextMenus():
-    from pyvirtualdisplay.display import Display
-    from os import path
-    import hashlib
-    import time
 
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver import ActionChains, Chrome, ChromeOptions, Keys
-    from selenium.webdriver.support.wait import WebDriverWait
-    from selenium.webdriver import Chrome, ChromeOptions
-    from selenium.webdriver.chrome.service import Service
-
-    import subprocess
-
-    def payloads(path_to_payload):
-        payload_array = []
-        try:
-            with open(path_to_payload, 'r') as file:
-                # Read the contents of the file
-                for line in file:
-                    payload_array.append(line)
-        except FileNotFoundError:
-            print("File not found.")
-        except IOError:
-            print("An error occurred while reading the file.")
-
-        return payload_array
-
-    def get_ext_id(path_to_extension):
-        abs_path = path.abspath(path_to_extension)
-        m = hashlib.sha256()
-        m.update(abs_path.encode("utf-8"))
-        ext_id = "".join([chr(int(i, base=16) + 97) for i in m.hexdigest()][:32])
-        url_path = f"chrome-extension://{ext_id}/popup.html"
-        return url_path, abs_path
-        
-
-
-
-    with Display() as disp:
-
-        payloads = payloads('payloads/small_payload.txt')
-        url_path, abs_path = get_ext_id('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
-
-        print(disp.is_alive())
-        print(disp.display)
-        options = ChromeOptions()
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--no-sandbox")
-        load_ext_arg = "load-extension=" + abs_path
-        options.add_argument(load_ext_arg)
-        driver = Chrome(service=Service(), options=options)
-
-        # get www.example.com
-        driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
-        # set handler for example.com
-        example = driver.current_window_handle
-
-        # get extension popup.html
-        driver.switch_to.new_window('tab')
-        extension = driver.current_window_handle
-        driver.get(url_path)
-        driver.save_screenshot('ss.png')
-        time.sleep(2)
-
-        for payload in payloads:
-            print(payload)
-            # driver.switch_to.window(extension)
-            # driver.refresh()
-
-            driver.switch_to.window(example)
-
-            driver.execute_script(f'document.getElementById("h1_element").innerText = `{payload}`')
-            target_element = driver.find_element(By.ID, 'h1_element')
-
-            # Select the text using JavaScript
-            driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
-
-
-            actions = ActionChains(driver)
-            actions.context_click(target_element).perform()
-
-
-            driver.save_screenshot('ss.png')
-            time.sleep(2)
-
-
-            for _ in range(6):
-                subprocess.call(['xdotool', 'key', 'Down'])
-
-            # Simulate pressing the "Enter" key
-            subprocess.call(['xdotool', 'key', 'Return'])
-
-            try:
-                # wait 2 seconds to see if alert is detected
-                WebDriverWait(driver, 2).until(EC.alert_is_present())
-                alert = driver.switch_to.alert
-                alert.accept()
-                print('+ Alert Detected +')
-            except TimeoutException:
-                print('= No alerts detected =')
-
-
-            driver.switch_to.window(extension)
-            driver.save_screenshot('ss.png')
-            time.sleep(1)
-
-
-            driver.switch_to.window(example)
-            driver.save_screenshot('ss.png')
-            time.sleep(1)
-            
 
 
 
@@ -716,3 +754,6 @@ def button_input_paradox():
         # for rank, button_id in enumerate(sorted_button_ids, start=1):
         #     common_prefix_length = common_prefix_lengths[button_id]
         #     print(f"Rank {rank}: Button ID {button_id} (Common Prefix Length: {common_prefix_length})")
+
+
+
