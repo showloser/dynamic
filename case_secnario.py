@@ -399,17 +399,38 @@ def context_menu(driver, abs_path, url_path, payloads):
     
         driver.switch_to.window(example)
 
-
+        
         target_element = driver.find_element(By.ID, 'srcUrl')
-
         driver.execute_script("var range = document.createRange(); range.selectNode(arguments[0]); console.log(range);window.getSelection().addRange(range);", target_element)
 
-
         # # perform right click to open context menu
-        # actions = ActionChains(driver)
-        # actions.context_click(target_element).perform()
+        actions = ActionChains(driver)
+        actions.context_click(target_element).perform()
 
-    # context_menu_src_url()
+
+
+    def context_menu_frame_url():
+        # get www.example.com
+        driver.get('file:////home/showloser/localhost/dynamic/test.html')
+        # set handler for example.com
+        example = driver.current_window_handle
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+    
+        driver.switch_to.window(example)
+
+
+        target_element = driver.find_element(By.ID, 'frameUrl')
+
+        
+
+
+
+    context_menu_src_url()
+    # context_menu_frame_url()
 
 
     
