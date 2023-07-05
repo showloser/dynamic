@@ -3,6 +3,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoAlertPresentException
+from selenium.webdriver.common.by import By
+
 
 from os import path
 import hashlib
@@ -36,8 +38,7 @@ def initialize(path_to_extension):
         return payload_array
 
     url_path, abs_path = get_ext_id(path_to_extension)
-    # payloads = payloads('payloads/small_payload.txt')
-    payloads = payloads('payloads/pearlyn_paylaod.txt')
+    payloads = payloads('payloads/small_payload.txt')
 
     # initialize selenium and load extension
     options = webdriver.ChromeOptions()
@@ -61,7 +62,6 @@ def initialize(path_to_extension):
     context_menu(driver, abs_path, url_path, payloads)
 
     # case 4: (still doing)
-
 
     # case 5: 
     # chromeTabsQuery(driver, abs_path, url_path, payloads)
@@ -153,9 +153,9 @@ def context_menu(driver, abs_path, url_path, payloads):
     # 4) frame Url
     # 5) Page Url
 
+    
     def context_menu_selectionText():
         from selenium.webdriver.common.action_chains import ActionChains
-        from selenium.webdriver.common.by import By
         from pynput.keyboard import Controller, Key
 
         # get www.example.com
@@ -167,7 +167,7 @@ def context_menu(driver, abs_path, url_path, payloads):
         driver.switch_to.new_window('tab')
         extension = driver.current_window_handle
         driver.get(url_path)
-
+        print(payloads)
         for payload in payloads:
             driver.switch_to.window(example)
             driver.execute_script(f'document.getElementById("h1_element").innerText = `{payload}`')
@@ -315,8 +315,11 @@ def context_menu(driver, abs_path, url_path, payloads):
                 driver.save_screenshot('ss.png')
                 time.sleep(1)
      
-            
     def context_menu_link_url():
+        from selenium.webdriver.common.action_chains import ActionChains
+        from pynput.keyboard import Controller, Key
+
+
         # get www.example.com
         driver.get('file:////home/showloser/localhost/dynamic/test.html')
         # set handler for example.com
@@ -326,20 +329,95 @@ def context_menu(driver, abs_path, url_path, payloads):
         driver.switch_to.new_window('tab')
         extension = driver.current_window_handle
         driver.get(url_path)
+        
 
-        
-        # for link url, inject our payload into the link.
-        
     
-    context_menu_link_url()
+    # there are 2 possible ways to insert paylaod, either directly or using query parameters.
+        for i in range(2):
+            for payload in payloads:
+                # for link url, inject our payload into the link.
+                driver.switch_to.window(example)
+
+                # using selenium to find element by ID
+                target_element = driver.find_element(By.ID, 'linkUrl')
+                
+                # Payload Injection (Href)
+                if i == 0:
+                    # PAYLOAD INJECTION CASE 1 (Directly Injecting)
+                    print("direct")
+                    driver.execute_script(f'var linkElement = document.getElementById("linkUrl"); linkElement.href = `{payload}`')
+                elif i == 1:
+                    print('query params')
+                    # PAYLOAD INJECTION CASE 2 (Injecting Query Parameters)
+                    driver.execute_script(f'var linkElement = document.getElementById("linkUrl"); linkElement.href = `?q={payload}`')
+                else:
+                    print("ERROR")
+
+                # perform text highlight/selection
+                driver.execute_script("window.getSelection().selectAllChildren(arguments[0]);", target_element)
+                # perform right click to open context menu
+                actions = ActionChains(driver)
+                actions.context_click(target_element).perform()
+
+
+                # navigate to extension context menu option
+                keyboard = Controller()
+                for _ in range(11):  
+                    # Press the arrow key down
+                    keyboard.press(Key.down)
+                    # Release the arrow key
+                    keyboard.release(Key.down)
+
+                # Press the Enter key
+                keyboard.press(Key.enter)
+                # Release the Enter key
+                keyboard.release(Key.enter)
+                
+                try:
+                    # wait 2 seconds to see if alert is detected
+                    WebDriverWait(driver, 2).until(EC.alert_is_present())
+                    alert = driver.switch_to.alert
+                    alert.accept()
+                    print('+ Alert Detected +')
+                except TimeoutException:
+                    print('= No alerts detected =')
+    
+    # SUCK MY DICK
+    def context_menu_src_url():
+        from selenium.webdriver.common.action_chains import ActionChains
+        from pynput.keyboard import Controller, Key
+
+        # get www.example.com
+        driver.get('file:////home/showloser/localhost/dynamic/test.html')
+        # set handler for example.com
+        example = driver.current_window_handle
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+    
+        driver.switch_to.window(example)
+
+
+        target_element = driver.find_element(By.ID, 'srcUrl')
+
+        driver.execute_script("var range = document.createRange(); range.selectNode(arguments[0]); console.log(range);window.getSelection().addRange(range);", target_element)
+
+
+        # # perform right click to open context menu
+        # actions = ActionChains(driver)
+        # actions.context_click(target_element).perform()
+
+    # context_menu_src_url()
+
+
+    
 
 
 
 
-
-
-
-
+    
 
 
 
