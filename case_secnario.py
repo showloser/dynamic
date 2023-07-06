@@ -580,14 +580,6 @@ def context_menu(driver, abs_path, url_path, payloads):
     context_menu_page_url()
     # context_menu_frame_url()    
 
-
-
-
-
-
-
-
-
 # 4) onConnect (Hvt do)
 def onConnect(driver,abs_path, url_path, paylaods):
     print('in progress')
@@ -860,6 +852,7 @@ def locationSearch(driver, abs_path, url_path, payloads):
 initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
+
 
 
 
