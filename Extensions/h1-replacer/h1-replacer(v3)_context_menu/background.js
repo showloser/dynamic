@@ -1,6 +1,6 @@
 // Listen for messages from the popup or content script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log(message.text);
+    // console.log(message.text);
     if (message.text) {
       // Modify the <h1> elements on the webpage
       chrome.tabs.query({}, (tabs) => {

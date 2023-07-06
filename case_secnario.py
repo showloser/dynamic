@@ -29,7 +29,8 @@ def initialize(path_to_extension):
             with open(path_to_payload, 'r') as file:
                 # Read the contents of the file
                 for line in file:
-                    payload_array.append(line)
+                    payload = line.rstrip('\n')
+                    payload_array.append(payload)
         except FileNotFoundError:
             print("File not found.")
         except IOError:
@@ -38,7 +39,7 @@ def initialize(path_to_extension):
         return payload_array
 
     url_path, abs_path = get_ext_id(path_to_extension)
-    payloads = payloads('payloads/small_payload.txt')
+    payloads = payloads('payloads/extra_small_payload.txt')
 
     # initialize selenium and load extension
     options = webdriver.ChromeOptions()
@@ -146,6 +147,9 @@ def location_href(driver, abs_path, url_path, payloads):
 
 # 3) Context_Menu
 def context_menu(driver, abs_path, url_path, payloads):
+    from selenium.webdriver.common.action_chains import ActionChains
+    from pynput.keyboard import Controller, Key
+    import urllib.parse
     # entry points:
     # 1) Selection Text
     # 2) Link Url 
@@ -154,6 +158,8 @@ def context_menu(driver, abs_path, url_path, payloads):
     # 5) Page Url
 
     
+
+    # Selection Text [GUI]
     def context_menu_selectionText():
         from selenium.webdriver.common.action_chains import ActionChains
         from pynput.keyboard import Controller, Key
@@ -206,6 +212,7 @@ def context_menu(driver, abs_path, url_path, payloads):
 
         time.sleep(2)
 
+    # Selection Text [Headless]
     def context_menu_selectionText_headless():
         from pyvirtualdisplay.display import Display
         from os import path
@@ -314,11 +321,11 @@ def context_menu(driver, abs_path, url_path, payloads):
                 driver.switch_to.window(example)
                 driver.save_screenshot('ss.png')
                 time.sleep(1)
-     
+
+    # Link Url [GUI]    
     def context_menu_link_url():
         from selenium.webdriver.common.action_chains import ActionChains
         from pynput.keyboard import Controller, Key
-
 
         # get www.example.com
         driver.get('file:////home/showloser/localhost/dynamic/test.html')
@@ -349,7 +356,7 @@ def context_menu(driver, abs_path, url_path, payloads):
                 elif i == 1:
                     print('query params')
                     # PAYLOAD INJECTION CASE 2 (Injecting Query Parameters)
-                    driver.execute_script(f'var linkElement = document.getElementById("linkUrl"); linkElement.href = `?q={payload}`')
+                    driver.execute_script(f'var linkElement = document.getElementById("linkUrl"); linkElement.href = ?q=`{payload}`')
                 else:
                     print("ERROR")
 
@@ -382,10 +389,9 @@ def context_menu(driver, abs_path, url_path, payloads):
                 except TimeoutException:
                     print('= No alerts detected =')
     
-    # SUCK MY DICK
+    # Src Url [GUI]
     def context_menu_src_url():
-        from selenium.webdriver.common.action_chains import ActionChains
-        from pynput.keyboard import Controller, Key
+
 
         # get www.example.com
         driver.get('file:////home/showloser/localhost/dynamic/test.html')
@@ -403,12 +409,33 @@ def context_menu(driver, abs_path, url_path, payloads):
         target_element = driver.find_element(By.ID, 'srcUrl')
         driver.execute_script("var range = document.createRange(); range.selectNode(arguments[0]); console.log(range);window.getSelection().addRange(range);", target_element)
 
-        # # perform right click to open context menu
-        actions = ActionChains(driver)
-        actions.context_click(target_element).perform()
+        # # # perform right click to open context menu
+        # actions = ActionChains(driver)
+        # actions.context_click(target_element).perform()
 
+        # # navigate to extension context menu option
+        # keyboard = Controller()
+        # for _ in range(8):  
+        #     # Press the arrow key down
+        #     keyboard.press(Key.down)
+        #     # Release the arrow key
+        #     keyboard.release(Key.down)
 
+        # # Press the Enter key
+        # keyboard.press(Key.enter)
+        # # Release the Enter key
+        # keyboard.release(Key.enter)
+        
+        # try:
+        #     # wait 2 seconds to see if alert is detected
+        #     WebDriverWait(driver, 2).until(EC.alert_is_present())
+        #     alert = driver.switch_to.alert
+        #     alert.accept()
+        #     print('+ Alert Detected +')
+        # except TimeoutException:
+        #     print('= No alerts detected =')
 
+    # Frame Url [GUI]
     def context_menu_frame_url():
         # get www.example.com
         driver.get('file:////home/showloser/localhost/dynamic/test.html')
@@ -419,26 +446,139 @@ def context_menu(driver, abs_path, url_path, payloads):
         driver.switch_to.new_window('tab')
         extension = driver.current_window_handle
         driver.get(url_path)
-    
-        driver.switch_to.window(example)
 
 
-        target_element = driver.find_element(By.ID, 'frameUrl')
+        cases = ['queryParams', 'fragementIdentifier']
 
-        
-
-
-
-    context_menu_src_url()
-    # context_menu_frame_url()
+        for i in range(len(cases)):
+            
+            for payload in payloads:
+                print(payload)
 
 
-    
+                driver.switch_to.window(example)
+
+                wait = WebDriverWait(driver, 5)  # Maximum wait time of 5 seconds
+                iframeElement = wait.until(EC.presence_of_element_located((By.ID, 'frameUrl')))
+
+                if i == 0:
+                    print('queryParams')
+                    driver.execute_script(f'var frameElement = document.getElementById("frameUrl"); frameElement.src = `https://www.example_xss.com/XSS?q={payload}`')
+                elif i == 1:
+                    print('fragmentIdentifier')
+                    driver.execute_script(f'var frameElement = document.getElementById("frameUrl"); frameElement.src = `https://www.example_xss.com/XSS#{payload}`')
+                else:
+                    print("ERROR")
+
+
+                # # perform right click to open context menu
+                actions = ActionChains(driver)
+                actions.move_to_element(iframeElement)
+                actions.context_click().perform()
+
+                # navigate to extension context menu option
+                keyboard = Controller()
+                for _ in range(8):  
+                    # Press the arrow key down
+                    keyboard.press(Key.down)
+                    # Release the arrow key
+                    keyboard.release(Key.down)
+
+                # Press the Enter key
+                keyboard.press(Key.enter)
+                # Release the Enter key
+                keyboard.release(Key.enter)
+
+                driver.switch_to.window(extension)
+                driver.switch_to.window(example)
+
+                
+                try:
+                    # wait 2 seconds to see if alert is detected
+                    WebDriverWait(driver, 2).until(EC.alert_is_present())
+                    alert = driver.switch_to.alert
+                    alert.accept()
+                    print('+ Alert Detected +')
+                except TimeoutException:
+                    print('= No alerts detected =')
+
+    # PageUrl [GUI]
+    def context_menu_page_url():
+        # Maximum wait time of 5 seconds
+        wait = WebDriverWait(driver,5)
+
+        # get www.example.com
+        driver.get('file:////home/showloser/localhost/dynamic/test.html')
+        # set handler for example.com
+        example = driver.current_window_handle
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+
+
+        cases = ['queryParams', 'fragementIdentifier']
+        for i in range(len(cases)):
+            for payload in payloads:
+                print(payload)
+                # switch to example.com
+                driver.switch_to.window(example)
+                # Reset the URL to the original URL
+                driver.execute_script(f"window.history.replaceState(null, null, `file:////home/showloser/localhost/dynamic/test.html`)")
+
+
+                # url encode xss payload 
+                encoded_payload = urllib.parse.quote(payload)
+
+                if i == 0:
+                    print('queryParams')
+                    driver.execute_script(f"window.history.replaceState(null, null, `{driver.current_url}?qureyParam={encoded_payload}`)")
+                elif i ==1:
+                    print('fragmentIdentifier')
+                    driver.execute_script(f"window.history.replaceState(null, null, `{driver.current_url}#{encoded_payload}`)")
+                else:
+                    print("ERROR")
+
+
+                PageUrlElement = wait.until(EC.presence_of_element_located((By.ID, 'pageUrl')))
+
+                # # perform right click to open context menu
+                actions = ActionChains(driver)
+                actions.move_to_element(PageUrlElement)
+                actions.context_click().perform()
+
+                # navigate to extension context menu option
+                keyboard = Controller()
+                for _ in range(8):  
+                    # Press the arrow key down
+                    keyboard.press(Key.down)
+                    # Release the arrow key
+                    keyboard.release(Key.down)
+
+                # Press the Enter key
+                keyboard.press(Key.enter)
+                # Release the Enter key
+                keyboard.release(Key.enter)
+
+                driver.switch_to.window(extension)
+                driver.switch_to.window(example)
+
+                
+                try:
+                    # wait 2 seconds to see if alert is detected
+                    WebDriverWait(driver, 2).until(EC.alert_is_present())
+                    alert = driver.switch_to.alert
+                    alert.accept()
+                    print('+ Alert Detected +')
+                except TimeoutException:
+                    print('= No alerts detected =')
 
 
 
 
-    
+    context_menu_page_url()
+    # context_menu_frame_url()    
 
 
 
