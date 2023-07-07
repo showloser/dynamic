@@ -409,31 +409,31 @@ def context_menu(driver, abs_path, url_path, payloads):
         target_element = driver.find_element(By.ID, 'srcUrl')
         driver.execute_script("var range = document.createRange(); range.selectNode(arguments[0]); console.log(range);window.getSelection().addRange(range);", target_element)
 
-        # # # perform right click to open context menu
-        # actions = ActionChains(driver)
-        # actions.context_click(target_element).perform()
+        # # perform right click to open context menu
+        actions = ActionChains(driver)
+        actions.context_click(target_element).perform()
 
-        # # navigate to extension context menu option
-        # keyboard = Controller()
-        # for _ in range(8):  
-        #     # Press the arrow key down
-        #     keyboard.press(Key.down)
-        #     # Release the arrow key
-        #     keyboard.release(Key.down)
+        # navigate to extension context menu option
+        keyboard = Controller()
+        for _ in range(8):  
+            # Press the arrow key down
+            keyboard.press(Key.down)
+            # Release the arrow key
+            keyboard.release(Key.down)
 
-        # # Press the Enter key
-        # keyboard.press(Key.enter)
-        # # Release the Enter key
-        # keyboard.release(Key.enter)
+        # Press the Enter key
+        keyboard.press(Key.enter)
+        # Release the Enter key
+        keyboard.release(Key.enter)
         
-        # try:
-        #     # wait 2 seconds to see if alert is detected
-        #     WebDriverWait(driver, 2).until(EC.alert_is_present())
-        #     alert = driver.switch_to.alert
-        #     alert.accept()
-        #     print('+ Alert Detected +')
-        # except TimeoutException:
-        #     print('= No alerts detected =')
+        try:
+            # wait 2 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('+ Alert Detected +')
+        except TimeoutException:
+            print('= No alerts detected =')
 
     # Frame Url [GUI]
     def context_menu_frame_url():
@@ -577,8 +577,9 @@ def context_menu(driver, abs_path, url_path, payloads):
 
 
 
-    context_menu_page_url()
+    # context_menu_page_url()
     # context_menu_frame_url()    
+    context_menu_src_url()
 
 # 4) onConnect (Hvt do)
 def onConnect(driver,abs_path, url_path, paylaods):
