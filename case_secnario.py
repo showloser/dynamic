@@ -59,7 +59,7 @@ def initialize(path_to_extension):
 
 
     # case 3:
-    # context_menu(driver, abs_path, url_path, payloads)
+    context_menu(driver, abs_path, url_path, payloads)
 
     # case 4: (still doing)
 
@@ -110,8 +110,6 @@ def window_name(driver, abs_path, url_path, payloads):
             print('= No alerts detected =')
 
 
-
- ##################################################
 def window_name_new(driver, abs_path, url_path, payloads):
     try:
         # Navigate to example.com
@@ -195,11 +193,6 @@ def window_name_new(driver, abs_path, url_path, payloads):
     except Exception as e:
         # Handle any other exceptions that occur
         print("An error occurred:", str(e))
-
-
-
-
-
 
 
 
@@ -493,37 +486,47 @@ def context_menu(driver, abs_path, url_path, payloads):
         extension = driver.current_window_handle
         driver.get(url_path)
     
-        driver.switch_to.window(example)
 
-        
-        target_element = driver.find_element(By.ID, 'srcUrl')
-        driver.execute_script("var range = document.createRange(); range.selectNode(arguments[0]); console.log(range);window.getSelection().addRange(range);", target_element)
+        for payload in payloads:
 
-        # # perform right click to open context menu
-        actions = ActionChains(driver)
-        actions.context_click(target_element).perform()
+            driver.switch_to.window(example)
+            target_element = driver.find_element(By.ID, 'srcUrl')
+            # driver.execute_script("var range = document.createRange(); range.selectNode(arguments[0]); console.log(range);window.getSelection().addRange(range);", target_element)
 
-        # navigate to extension context menu option
-        keyboard = Controller()
-        for _ in range(8):  
-            # Press the arrow key down
-            keyboard.press(Key.down)
-            # Release the arrow key
-            keyboard.release(Key.down)
+            driver.execute_script(f"document.getElementById('srcUrl').src = `{payload}`")
 
-        # Press the Enter key
-        keyboard.press(Key.enter)
-        # Release the Enter key
-        keyboard.release(Key.enter)
-        
-        try:
-            # wait 2 seconds to see if alert is detected
-            WebDriverWait(driver, 2).until(EC.alert_is_present())
-            alert = driver.switch_to.alert
-            alert.accept()
-            print('+ Alert Detected +')
-        except TimeoutException:
-            print('= No alerts detected =')
+            # # perform right click to open context menu
+            actions = ActionChains(driver)
+
+            actions.drag_and_drop_by_offset(actions.move_to_element_with_offset(target_element,50,0).release().perform(), -80,0).context_click().perform()
+
+            # navigate to extension context menu option
+            time.sleep(1)
+            keyboard = Controller()
+            for _ in range(7):  
+                # Press the arrow key down
+                keyboard.press(Key.down)
+                # Release the arrow key
+                keyboard.release(Key.down)
+
+            # Press the Enter key
+            keyboard.press(Key.enter)
+            # Release the Enter key
+            keyboard.release(Key.enter)
+            
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('+ Alert Detected +')
+            except TimeoutException:
+                print('= No alerts detected =')
+            
+            driver.switch_to.window(extension)
+            time.sleep(2)
+
+
 
     # Frame Url [GUI]
     def context_menu_frame_url():
@@ -665,9 +668,12 @@ def context_menu(driver, abs_path, url_path, payloads):
                     print('= No alerts detected =')
 
 
+    # context_menu_selectionText()
+    # context_menu_link_url()
+    context_menu_src_url()
+    # context_menu_frame_url()   
     # context_menu_page_url()
-    # context_menu_frame_url()    
-    # context_menu_src_url()
+ 
 
 # 4) onConnect (Hvt do)
 def onConnect(driver,abs_path, url_path, paylaods):
@@ -960,9 +966,11 @@ def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
 
 
 # # Main Program #
-initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
+# initialize('Extensions/gtranslate')
+
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
