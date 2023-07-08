@@ -113,7 +113,6 @@ def window_name(driver, abs_path, url_path, payloads):
 
  ##################################################
 def window_name_new(driver, abs_path, url_path, payloads):
-
     try:
         # Navigate to example.com
         driver.get('https://www.example.com')
@@ -133,7 +132,6 @@ def window_name_new(driver, abs_path, url_path, payloads):
 
         # get page source code of extension
         extension_source_code = driver.page_source
-
 
 
         for payload in payloads:
@@ -197,11 +195,6 @@ def window_name_new(driver, abs_path, url_path, payloads):
     except Exception as e:
         # Handle any other exceptions that occur
         print("An error occurred:", str(e))
-
-
-
-
-
 
 
 
@@ -973,15 +966,6 @@ initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
-
-
-
-
-
-
-
-
-
 
 
 
