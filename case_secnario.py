@@ -59,7 +59,7 @@ def initialize(path_to_extension):
 
 
     # case 3:
-    context_menu(driver, abs_path, url_path, payloads)
+    # context_menu(driver, abs_path, url_path, payloads)
 
     # case 4: (still doing)
 
@@ -526,8 +526,6 @@ def context_menu(driver, abs_path, url_path, payloads):
             driver.switch_to.window(extension)
             time.sleep(2)
 
-
-
     # Frame Url [GUI]
     def context_menu_frame_url():
         # get www.example.com
@@ -970,10 +968,10 @@ def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
 
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
 
 
 
