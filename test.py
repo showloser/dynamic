@@ -1,7 +1,9 @@
 from postMessageRegex import extract_unique_strings
 
 
-result1 = extract_unique_strings('''function abc() {
+
+javascript_code1 = '''
+function abc() {
     window.addEventListener("message", (event) => {
       console.log("Event Data: ", event)
       xyz = event.data
@@ -19,9 +21,13 @@ result1 = extract_unique_strings('''function abc() {
   });
   
 .tabs
+  .cocksuker123
 
+  .123skd
   // PAYLOAD: 
-  // postMessage({ message: "<img src=x onerror=alert(1)>" }, "*")''')
+  // postMessage({ message: "<img src=x onerror=alert(1)>" }, "*")
+'''
 
 
-print(result1)
+
+print(extract_unique_strings(javascript_code1))
