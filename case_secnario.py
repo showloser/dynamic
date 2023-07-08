@@ -8,8 +8,6 @@ from selenium.webdriver.common.by import By
 
 from os import path
 import hashlib
-
-from pathlib import Path
 import time
 import os
 
@@ -51,16 +49,17 @@ def initialize(path_to_extension):
 
 
 
-
+    # window_name_new(driver, abs_path, url_path, payloads)
     # case 1:
     # window_name(driver, abs_path, url_path, payloads)
+    # window_name_new(driver, abs_path, url_path, payloads)
 
     # case 2:
     # location_href(driver, abs_path, url_path, payloads)
 
 
     # case 3:
-    context_menu(driver, abs_path, url_path, payloads)
+    # context_menu(driver, abs_path, url_path, payloads)
 
     # case 4: (still doing)
 
@@ -70,13 +69,14 @@ def initialize(path_to_extension):
     # case 6:
     # locationSearch(driver, abs_path, url_path, payloads)
 
-
+    # case 7:
+    # windowAddEventListenerMessage(driver, abs_path, url_path, payloads)
 
 ################
 # Case Scenario#
 ################
 
-# 1) Window_name Entry Point
+# 1) Window_name
 def window_name(driver, abs_path, url_path, payloads):
 
     # get www.example.com
@@ -108,6 +108,107 @@ def window_name(driver, abs_path, url_path, payloads):
             print('+ Alert Detected +')
         except TimeoutException:
             print('= No alerts detected =')
+
+
+
+ ##################################################
+def window_name_new(driver, abs_path, url_path, payloads):
+
+    try:
+        # Navigate to example.com
+        driver.get('https://www.example.com')
+        example = driver.current_window_handle
+
+        # Wait up to 5 seconds for the title to become "Example Domain"
+        title_condition = EC.title_is('Example Domain')
+        WebDriverWait(driver, 5).until(title_condition)
+
+        # get page source code of example.com
+        example_source_code = driver.page_source
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        driver.get(url_path)
+        extension = driver.current_window_handle
+
+        # get page source code of extension
+        extension_source_code = driver.page_source
+
+
+
+        for payload in payloads:
+            # since window.name is obtained from the website url, we will inject javascript to change the window.name
+            driver.switch_to.window(example)
+
+            driver.execute_script(f'window.name = `{payload}`;')
+
+            driver.switch_to.window(extension)
+            driver.refresh()
+
+
+            # check for alerts in extensions
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('[1] + Alert Detected +')
+            except TimeoutException:
+                print('[1] = No alerts detected =')
+
+            driver.switch_to.window(example)
+
+
+            # check for alerts in example
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('[2] + Alert Detected +')
+            except TimeoutException:
+                print('[2] = No alerts detected =')
+
+
+            try: 
+                # check modifications for example.com
+                driver.switch_to.window(example)
+                if example_source_code != driver.page_source:
+                    driver.get("https://www.example.com")
+                    print("Navigated back to 'https://www.example.com' due to page source changes")
+
+            except:
+                print('error')
+
+            try: 
+                # check modifications for extension
+                driver.switch_to.window(extension)
+                if extension_source_code != driver.page_source:
+                    driver.get(url_path)
+                    print(f"Navigated back to '{url_path}' due to extension page source changes")
+
+            except:
+                print('error')
+
+    except TimeoutException:
+        # Handle TimeoutException when title condition is not met
+        print("Timeout: Title was not resolved to 'Example Domain'")
+
+    except Exception as e:
+        # Handle any other exceptions that occur
+        print("An error occurred:", str(e))
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 2) Location_href
 def location_href(driver, abs_path, url_path, payloads):
@@ -156,8 +257,6 @@ def context_menu(driver, abs_path, url_path, payloads):
     # 3) Src Url
     # 4) frame Url
     # 5) Page Url
-
-    
 
     # Selection Text [GUI]
     def context_menu_selectionText():
@@ -391,8 +490,6 @@ def context_menu(driver, abs_path, url_path, payloads):
     
     # Src Url [GUI]
     def context_menu_src_url():
-
-
         # get www.example.com
         driver.get('file:////home/showloser/localhost/dynamic/test.html')
         # set handler for example.com
@@ -575,11 +672,9 @@ def context_menu(driver, abs_path, url_path, payloads):
                     print('= No alerts detected =')
 
 
-
-
     # context_menu_page_url()
     # context_menu_frame_url()    
-    context_menu_src_url()
+    # context_menu_src_url()
 
 # 4) onConnect (Hvt do)
 def onConnect(driver,abs_path, url_path, paylaods):
@@ -840,6 +935,30 @@ def locationSearch(driver, abs_path, url_path, payloads):
             print('= No alerts detected =')
 
 
+# 7) window.addEventListerner.message
+def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
+    # PAYLOAD: 
+    # postMessage({ message: "<img src=x onerror=alert(1)>" }, "*")
+    
+    # get xss test website
+    driver.get('file:////home/showloser/localhost/dynamic/test.html')
+    # set handler for example.com
+    example = driver.current_window_handle
+
+    # get extension popup.html
+    driver.switch_to.new_window('tab')
+    extension = driver.current_window_handle
+    driver.get(url_path)
+
+    # pre-configure
+    buttons = driver.find_elements(By.TAG_NAME,"button")
+    for button in buttons:
+        button.click()
+
+
+    driver.switch_to.window(example)
+    driver.execute_script('postMessage({ message: "1", cock: "2", dickless_dude: "3" }, "*")')
+
 
 
 
@@ -848,11 +967,12 @@ def locationSearch(driver, abs_path, url_path, payloads):
 
 
 # # Main Program #
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
 
 
 
@@ -987,6 +1107,10 @@ def button_input_paradox():
         # for rank, button_id in enumerate(sorted_button_ids, start=1):
         #     common_prefix_length = common_prefix_lengths[button_id]
         #     print(f"Rank {rank}: Button ID {button_id} (Common Prefix Length: {common_prefix_length})")
+
+
+
+
 
 
 

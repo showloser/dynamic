@@ -9,11 +9,14 @@ body { font-family: Arial, sans-serif; display: flex; justify-content: center; a
 } */
 
 </style>
+<title>Xss Website</title>
 </head>
 <body>
 
-<h1>www.Example.com!</h1> 
+<h1>Xss Testing Website</h1>
+<br>
 <div class="payload-container" href="#123">
+<p id="TEST">This is a chrome enviroment used for xss testing</p>
 <div class="payload">test123</div>
 <div class="payload">&lt;img src=xss onerror=alert(1)&gt;</div>
 <div class="payload">blaoejds222</div>
@@ -24,7 +27,6 @@ body { font-family: Arial, sans-serif; display: flex; justify-content: center; a
 <img src="https://www.scanext.com/srcUrl" id="srcUrl" alt="Image_fails">
 <br>
 <iframe src="https://www.scanext.com/frameUrl" id="frameUrl"></iframe>
-
 </div>
 </body>
 </html>
