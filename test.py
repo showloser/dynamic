@@ -1,33 +1,31 @@
 from postMessageRegex import extract_unique_strings
 
 
+path = 'Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js'
+start_line = 2
+end_line = 6
 
-javascript_code1 = '''
-function abc() {
-    window.addEventListener("message", (event) => {
-      console.log("Event Data: ", event)
-      xyz = event.data
-      tags = document.getElementsByTagName('h1')
-      tags[0].innerHTML = xyz.message + ' abc '
-    }) 
-  }
-  
-  chrome.tabs.query({ active: false, currentWindow: true }, function (tabs) {
-    chrome.scripting.executeScript({
-      target: { tabId: tabs[0].id },
-      func: abc,
-      args: []
-    })
-  });
-  
-.tabs
-  .cocksuker123
 
-  .123skd
-  // PAYLOAD: 
-  // postMessage({ message: "<img src=x onerror=alert(1)>" }, "*")
-'''
+def extract_codes_postMessage(path,start_line,end_line):
+  with open(path, 'r') as file:
+    lines = file.readlines()
+
+    # Adjust line numbers to Python's zero-based indexing
+    start_line -= 1
+    end_line -= 1
+
+    # Trim the lines within the specified range
+    code_lines = lines[start_line:end_line+1]
+
+    # Join the trimmed lines to form the code string
+    code = ''.join(code_lines)
+  return code
 
 
 
-print(extract_unique_strings(javascript_code1))
+
+code = extract_codes_postMessage(path,start_line,end_line)
+
+
+print(code)
+# print(extract_unique_strings())
