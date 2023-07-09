@@ -1,9 +1,5 @@
 import json
 
-
-
-
-
 def interpreter(data):
     tainted = []
     other_vars = []
