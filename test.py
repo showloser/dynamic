@@ -1,31 +1,46 @@
-from postMessageRegex import extract_unique_strings
-
-
-path = 'Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js'
-start_line = 2
-end_line = 6
-
-
-def extract_codes_postMessage(path,start_line,end_line):
-  with open(path, 'r') as file:
-    lines = file.readlines()
-
-    # Adjust line numbers to Python's zero-based indexing
-    start_line -= 1
-    end_line -= 1
-
-    # Trim the lines within the specified range
-    code_lines = lines[start_line:end_line+1]
-
-    # Join the trimmed lines to form the code string
-    code = ''.join(code_lines)
-  return code
+import logging
+import colorlog
 
 
 
+def setup_logger(log_file):
+    # Create a logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
 
-code = extract_codes_postMessage(path,start_line,end_line)
+    # Create a file handler and set the log level
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setLevel(logging.DEBUG)
+
+    # Create a console handler and set the log level
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+
+    # Create a formatter and add it to the handlers
+    log_format = '%(asctime)s - %(levelname)s - %(message)s'
+    formatter = logging.Formatter(log_format)
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    # Add the handlers to the logger
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+    return logger
+
+# Usage example
+logger = setup_logger('penetration_logv2.txt')
 
 
-print(code)
-# print(extract_unique_strings())
+
+
+def payload_logging(outcome, source, extension_id, extension_name, url_of_website, payload, time_of_injection, time_of_alert, payload_filename):
+
+  if outcome == "SUCCESS":
+    logger.info(f"outcome: \033[32m{outcome}\033[0m, source: {source}, extensionId: {extension_id}, extensionName: {extension_name}, Url: {url_of_website}, payload: {payload}, timeOfInjection: {time_of_injection}, timeOfAlert: {time_of_alert}, payload_fileName: {payload_filename}")
+  else:
+    logger.info(f"outcome: \033[31m{outcome}\033[0m, source: {source}, extensionId: {extension_id}, extensionName: {extension_name}, Url: {url_of_website}, payload: {payload}, timeOfInjection: {time_of_injection}, timeOfAlert: {time_of_alert}, payload_fileName: {payload_filename}")
+
+
+payload_logging("SUCCESS", "window.name", 'cjjdmmmccadnnnfjabpoboknknpiioge', 'h1-replacer(v3)', 'file:///test.html', '<img src=x onerror=alert("123")>', '2023-07-09 16:30:20,956', '2023-07-09 16:30:21,55', 'shit_ass_payload_file.txt')
+payload_logging("FAILURE", "window.name", 'cjjdmmmccadnnnfjabpoboknknpiioge', 'h1-replacer(v3)', 'file:///test.html', '<img src=x onerror=alert("123")>', '2023-07-09 16:30:20,956', '2023-07-09 16:30:21,55', 'shit_ass_payload_file.txt')
