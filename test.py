@@ -37,9 +37,9 @@ logger = setup_logger('penetration_logv2.txt')
 def payload_logging(outcome, source, extension_id, extension_name, url_of_website, payload, time_of_injection, time_of_alert, payload_filename):
 
   if outcome == "SUCCESS":
-    logger.info(f"outcome: \033[32m{outcome}\033[0m, source: {source}, extensionId: {extension_id}, extensionName: {extension_name}, Url: {url_of_website}, payload: {payload}, timeOfInjection: {time_of_injection}, timeOfAlert: {time_of_alert}, payload_fileName: {payload_filename}")
+    logger.info(f"outcome: {outcome}, source: {source}, extensionId: {extension_id}, extensionName: {extension_name}, Url: {url_of_website}, payload: {payload}, timeOfInjection: {time_of_injection}, timeOfAlert: {time_of_alert}, payload_fileName: {payload_filename}")
   else:
-    logger.info(f"outcome: \033[31m{outcome}\033[0m, source: {source}, extensionId: {extension_id}, extensionName: {extension_name}, Url: {url_of_website}, payload: {payload}, timeOfInjection: {time_of_injection}, timeOfAlert: {time_of_alert}, payload_fileName: {payload_filename}")
+    logger.info(f"outcome: {outcome}, source: {source}, extensionId: {extension_id}, extensionName: {extension_name}, Url: {url_of_website}, payload: {payload}, timeOfInjection: {time_of_injection}, timeOfAlert: {time_of_alert}, payload_fileName: {payload_filename}")
 
 
 payload_logging("SUCCESS", "window.name", 'cjjdmmmccadnnnfjabpoboknknpiioge', 'h1-replacer(v3)', 'file:///test.html', '<img src=x onerror=alert("123")>', '2023-07-09 16:30:20,956', '2023-07-09 16:30:21,55', 'shit_ass_payload_file.txt')
