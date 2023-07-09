@@ -1,0 +1,314 @@
+{
+    "errors": [],
+    "paths": {
+        "_comment": "<add --verbose for a list of skipped paths>",
+        "scanned": [
+            "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js"
+        ]
+    },
+    "results": [
+        {
+            "check_id": "STATIC_ANALYSIS.semgrep_rules.window_addEventListener_message.window_addEventListener_message-innerHTML",
+            "end": {
+                "col": 46,
+                "line": 6,
+                "offset": 219
+            },
+            "extra": {
+                "dataflow_trace": {
+                    "intermediate_vars": [
+                        {
+                            "content": "event",
+                            "location": {
+                                "end": {
+                                    "col": 44,
+                                    "line": 2,
+                                    "offset": 60
+                                },
+                                "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+                                "start": {
+                                    "col": 39,
+                                    "line": 2,
+                                    "offset": 55
+                                }
+                            }
+                        },
+                        {
+                            "content": "xyz",
+                            "location": {
+                                "end": {
+                                    "col": 8,
+                                    "line": 4,
+                                    "offset": 113
+                                },
+                                "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+                                "start": {
+                                    "col": 5,
+                                    "line": 4,
+                                    "offset": 110
+                                }
+                            }
+                        }
+                    ],
+                    "taint_sink": [
+                        "CliLoc",
+                        [
+                            {
+                                "end": {
+                                    "col": 46,
+                                    "line": 6,
+                                    "offset": 219
+                                },
+                                "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+                                "start": {
+                                    "col": 25,
+                                    "line": 6,
+                                    "offset": 198
+                                }
+                            },
+                            "xyz.message + ' abc '"
+                        ]
+                    ],
+                    "taint_source": [
+                        "CliLoc",
+                        [
+                            {
+                                "end": {
+                                    "col": 44,
+                                    "line": 2,
+                                    "offset": 60
+                                },
+                                "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+                                "start": {
+                                    "col": 39,
+                                    "line": 2,
+                                    "offset": 55
+                                }
+                            },
+                            "event"
+                        ]
+                    ]
+                },
+                "engine_kind": "OSS",
+                "fingerprint": "b12f78c2e8a78043ce1ce525709f947d697c38a91eb400304b47ea0c341ab4687aafe4730e28d7591b896ed3a32f9a9e95bff8c8cfa14b6db4d620afdbda36bc_0",
+                "is_ignored": false,
+                "lines": "    tags[0].innerHTML = xyz.message + ' abc '",
+                "message": "Source:window_addEventListener_message;Sink:innerHTML",
+                "metadata": {},
+                "metavars": {
+                    "$INT": {
+                        "abstract_content": "0",
+                        "end": {
+                            "col": 11,
+                            "line": 6,
+                            "offset": 184
+                        },
+                        "start": {
+                            "col": 10,
+                            "line": 6,
+                            "offset": 183
+                        }
+                    },
+                    "$MESSAGE": {
+                        "abstract_content": "\"message\"",
+                        "end": {
+                            "col": 36,
+                            "line": 2,
+                            "offset": 52
+                        },
+                        "start": {
+                            "col": 27,
+                            "line": 2,
+                            "offset": 43
+                        }
+                    },
+                    "$X": {
+                        "abstract_content": "event",
+                        "end": {
+                            "col": 44,
+                            "line": 2,
+                            "offset": 60
+                        },
+                        "start": {
+                            "col": 39,
+                            "line": 2,
+                            "offset": 55
+                        }
+                    },
+                    "$Y": {
+                        "abstract_content": "tags",
+                        "end": {
+                            "col": 9,
+                            "line": 5,
+                            "offset": 135
+                        },
+                        "start": {
+                            "col": 5,
+                            "line": 5,
+                            "offset": 131
+                        }
+                    }
+                },
+                "severity": "WARNING"
+            },
+            "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+            "start": {
+                "col": 25,
+                "line": 6,
+                "offset": 198
+            }
+        },
+        {
+            "check_id": "STATIC_ANALYSIS.semgrep_rules.window_addEventListener_message.window_addEventListener_message-innerHTML",
+            "end": {
+                "col": 49,
+                "line": 8,
+                "offset": 269
+            },
+            "extra": {
+                "dataflow_trace": {
+                    "intermediate_vars": [
+                        {
+                            "content": "event",
+                            "location": {
+                                "end": {
+                                    "col": 44,
+                                    "line": 2,
+                                    "offset": 60
+                                },
+                                "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+                                "start": {
+                                    "col": 39,
+                                    "line": 2,
+                                    "offset": 55
+                                }
+                            }
+                        },
+                        {
+                            "content": "xyz",
+                            "location": {
+                                "end": {
+                                    "col": 8,
+                                    "line": 4,
+                                    "offset": 113
+                                },
+                                "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+                                "start": {
+                                    "col": 5,
+                                    "line": 4,
+                                    "offset": 110
+                                }
+                            }
+                        }
+                    ],
+                    "taint_sink": [
+                        "CliLoc",
+                        [
+                            {
+                                "end": {
+                                    "col": 49,
+                                    "line": 8,
+                                    "offset": 269
+                                },
+                                "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+                                "start": {
+                                    "col": 25,
+                                    "line": 8,
+                                    "offset": 245
+                                }
+                            },
+                            "xyz.lanjiao123 + ' abc '"
+                        ]
+                    ],
+                    "taint_source": [
+                        "CliLoc",
+                        [
+                            {
+                                "end": {
+                                    "col": 44,
+                                    "line": 2,
+                                    "offset": 60
+                                },
+                                "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+                                "start": {
+                                    "col": 39,
+                                    "line": 2,
+                                    "offset": 55
+                                }
+                            },
+                            "event"
+                        ]
+                    ]
+                },
+                "engine_kind": "OSS",
+                "fingerprint": "e0571c4c19b4d4bf90ace4300ed1ab63c9b4562c61a3fb7926323ef47391ec6cf8d9965544b6b14c0e6000c5461b95ae93c69d5a962d733f062b17cb48acd1bd_0",
+                "is_ignored": false,
+                "lines": "    tags[1].innerHTML = xyz.lanjiao123 + ' abc '",
+                "message": "Source:window_addEventListener_message;Sink:innerHTML",
+                "metadata": {},
+                "metavars": {
+                    "$INT": {
+                        "abstract_content": "1",
+                        "end": {
+                            "col": 11,
+                            "line": 8,
+                            "offset": 231
+                        },
+                        "start": {
+                            "col": 10,
+                            "line": 8,
+                            "offset": 230
+                        }
+                    },
+                    "$MESSAGE": {
+                        "abstract_content": "\"message\"",
+                        "end": {
+                            "col": 36,
+                            "line": 2,
+                            "offset": 52
+                        },
+                        "start": {
+                            "col": 27,
+                            "line": 2,
+                            "offset": 43
+                        }
+                    },
+                    "$X": {
+                        "abstract_content": "event",
+                        "end": {
+                            "col": 44,
+                            "line": 2,
+                            "offset": 60
+                        },
+                        "start": {
+                            "col": 39,
+                            "line": 2,
+                            "offset": 55
+                        }
+                    },
+                    "$Y": {
+                        "abstract_content": "tags",
+                        "end": {
+                            "col": 9,
+                            "line": 5,
+                            "offset": 135
+                        },
+                        "start": {
+                            "col": 5,
+                            "line": 5,
+                            "offset": 131
+                        }
+                    }
+                },
+                "severity": "WARNING"
+            },
+            "path": "DYNAMIC_ANALYSIS/wm_donttouch/Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage/popup.js",
+            "start": {
+                "col": 25,
+                "line": 8,
+                "offset": 245
+            }
+        }
+    ],
+    "version": "1.27.0"
+}

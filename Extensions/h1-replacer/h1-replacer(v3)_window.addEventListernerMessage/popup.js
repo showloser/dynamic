@@ -4,6 +4,9 @@ function abc() {
       xyz = event.data
       tags = document.getElementsByTagName('h1')
       tags[0].innerHTML = xyz.message + ' abc '
+
+      tags[1].innerHTML = xyz.lanjiao123 + ' abc '
+
     }) 
   }
   
