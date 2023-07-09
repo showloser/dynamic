@@ -49,15 +49,13 @@ def initialize(path_to_extension):
 
 
 
-    # window_name_new(driver, abs_path, url_path, payloads)
     # case 1:
     # window_name(driver, abs_path, url_path, payloads)
-    # window_name_new(driver, abs_path, url_path, payloads)
+    window_name_new(driver, abs_path, url_path, payloads)
 
     # case 2:
     # location_href(driver, abs_path, url_path, payloads)
     # location_href_new(driver, abs_path, url_path, payloads)
-
 
     # case 3:
     # context_menu(driver, abs_path, url_path, payloads)
@@ -110,7 +108,6 @@ def window_name(driver, abs_path, url_path, payloads):
         except TimeoutException:
             print('= No alerts detected =')
 
-
 def window_name_new(driver, abs_path, url_path, payloads):
     try:
         # Navigate to example.com
@@ -137,7 +134,23 @@ def window_name_new(driver, abs_path, url_path, payloads):
             # since window.name is obtained from the website url, we will inject javascript to change the window.name
             driver.switch_to.window(example)
 
-            driver.execute_script(f'window.name = `{payload}`;')
+            try:
+                driver.execute_script(f'window.name = `{payload}`;')
+            except Exception as e:
+                print(' !!!! PAYLOAD FAILLED !!!!')
+                print('Error: ', str(e))
+                continue
+
+            # check for alerts in example
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('[example] + Alert Detected +')
+            except TimeoutException:
+                print('[example] = No alerts detected =')
+                
 
             driver.switch_to.window(extension)
             driver.refresh()
@@ -149,22 +162,21 @@ def window_name_new(driver, abs_path, url_path, payloads):
                 WebDriverWait(driver, 2).until(EC.alert_is_present())
                 alert = driver.switch_to.alert
                 alert.accept()
-                print('[1] + Alert Detected +')
+                print('[extension] + Alert Detected +')
             except TimeoutException:
-                print('[1] = No alerts detected =')
+                print('[extension] = No alerts detected =')
 
             driver.switch_to.window(example)
 
-
-            # check for alerts in example
+            # check for alerts in example after refreshing extension
             try:
                 # wait 2 seconds to see if alert is detected
                 WebDriverWait(driver, 2).until(EC.alert_is_present())
                 alert = driver.switch_to.alert
                 alert.accept()
-                print('[2] + Alert Detected +')
+                print('[example] + Alert Detected +')
             except TimeoutException:
-                print('[2] = No alerts detected =')
+                print('[example] = No alerts detected =')
 
 
             try: 
@@ -262,11 +274,20 @@ def location_href_new(driver, abs_path, url_path, payloads):
                 driver.switch_to.window(example)
 
                 if j == 0:
-                    driver.execute_script(f"location.href = `https://www.example.com/?p={payload}`")
+                    try:
+                        driver.execute_script(f"loca1tion.href = `https://www.example.com/?p={payload}`")
+                    except Exception as e:
+                        print(' !!!! PAYLOAD FAILLED !!!!')
+                        print('Error: ', str(e))
+                        continue
+                        
                 else:
-                    driver.execute_script(f"location.href = `https://www.example.com/#{payload}`")
-                
-                time.sleep(0.5)
+                    try:
+                        driver.execute_script(f"location.href = `https://www.example.com/#{payload}`")
+                    except Exception as e:
+                        print(' !!!! PAYLOAD FAILLED !!!!')
+                        print('Error: ', str(e))
+                        continue
 
                 # check for alerts in example
                 try:
@@ -1102,8 +1123,8 @@ def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
 # # Main Program #
 # initialize('Extensions/gtranslate')
 
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
