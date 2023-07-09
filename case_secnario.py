@@ -56,8 +56,7 @@ def initialize(path_to_extension):
 
     # case 2:
     # location_href(driver, abs_path, url_path, payloads)
-    location_href_new(driver, abs_path, url_path, payloads)
-
+    # location_href_new(driver, abs_path, url_path, payloads)
 
 
     # case 3:
