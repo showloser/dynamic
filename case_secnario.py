@@ -168,7 +168,7 @@ def window_name_new(driver, abs_path, url_path, payloads):
 
             driver.switch_to.window(example)
 
-            # check for alerts in example after refreshing extension
+            # check for alerts in example
             try:
                 # wait 2 seconds to see if alert is detected
                 WebDriverWait(driver, 2).until(EC.alert_is_present())
