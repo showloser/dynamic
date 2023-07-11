@@ -11,6 +11,74 @@ import hashlib
 import time
 import os
 
+import json
+import logging
+
+
+
+## Logging framework
+def setup_logger(log_file):
+    # Create a logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    # Create a file handler and set the log level
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setLevel(logging.DEBUG)
+
+    # Create a formatter and add it to the handlers
+    log_format = '%(message)s'
+    formatter = logging.Formatter(log_format)
+    file_handler.setFormatter(formatter)
+
+    # Add the handlers to the logger
+    logger.addHandler(file_handler)
+
+    return logger
+
+logger = setup_logger('penetration_logv2_GUI.txt')
+
+
+def payload_logging(outcome, source, extension_id, extension_name, url_of_website, payload_type, payload, time_of_injection, time_of_alert, payload_filename, packet_info):
+    # Convert sets to lists
+    payload = str(payload)
+    packet_info = str(packet_info)
+
+    payload_log = {
+        "outcome": outcome,
+        "source": source,
+        "extensionId": extension_id,
+        "extensionName": extension_name,
+        "Url": url_of_website,
+        "payloadType": payload_type,
+        "payload": payload,
+        "timeOfInjection": time_of_injection,
+        "timeOfAlert": time_of_alert,
+        "payload_fileName": payload_filename,
+        "packetInfo": packet_info
+    }
+
+    log_message = json.dumps(payload_log)
+    logger.info(log_message)
+
+
+
+
+
+
+
+
+
+# Logging framework
+
+
+
+
+
+
+
+
+
 def initialize(path_to_extension):
     # obtain relevant extension information'
     def get_ext_id(path_to_extension):
@@ -55,7 +123,7 @@ def initialize(path_to_extension):
 
     # case 2:
     # location_href(driver, abs_path, url_path, payloads)
-    location_href_new(driver, abs_path, url_path, payloads)
+    # location_href_new(driver, abs_path, url_path, payloads)
 
     # case 3:
     # context_menu(driver, abs_path, url_path, payloads)
@@ -70,6 +138,48 @@ def initialize(path_to_extension):
 
     # case 7:
     # windowAddEventListenerMessage(driver, abs_path, url_path, payloads)
+
+def initialize_with_dev_tools(path_to_extension):
+    # obtain relevant extension information'
+    def get_ext_id(path_to_extension):
+        abs_path = path.abspath(path_to_extension)
+        m = hashlib.sha256()
+        m.update(abs_path.encode("utf-8"))
+        ext_id = "".join([chr(int(i, base=16) + 97) for i in m.hexdigest()][:32])
+        url_path = f"chrome-extension://{ext_id}/popup.html"
+        return url_path, abs_path
+    
+    def payloads(path_to_payload):
+        payload_array = []
+        try:
+            with open(path_to_payload, 'r') as file:
+                # Read the contents of the file
+                for line in file:
+                    payload = line.rstrip('\n')
+                    payload_array.append(payload)
+        except FileNotFoundError:
+            print("File not found.")
+        except IOError:
+            print("An error occurred while reading the file.")
+        
+        return payload_array
+
+    url_path, abs_path = get_ext_id(path_to_extension)
+    payloads = payloads('payloads/extra_small_payload.txt')
+
+    # initialize selenium and load extension
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('detach', True)
+    load_ext_arg = "load-extension=" + abs_path
+    options.add_argument(load_ext_arg)
+    options.add_argument("--enable-logging")
+    # options.add_argument("auto-open-devtools-for-tabs") ### OPEN DEV TOOLS
+    driver = webdriver.Chrome('./chromedriver', options=options)
+
+
+    # case 8: 
+    # run function direclty (changes made when initlising driver)
+    chromeDebuggerGetTargets(driver, abs_path, url_path, payloads)
 
 ################
 # Case Scenario#
@@ -355,8 +465,6 @@ def location_href_new(driver, abs_path, url_path, payloads):
     except Exception as e:
         # Handle any other exceptions that occur
         print("An error occurred:", str(e))
-
-
 
 
 # 3) Context_Menu
@@ -1256,8 +1364,23 @@ def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
             print('= No alerts detected =')
 
 
+# 8) chrome.debugger.getTargets
 def chromeDebuggerGetTargets(driver, abs_path, url_path, payloads):
-    print('cao')
+    from selenium.webdriver.common.action_chains import ActionChains
+    from selenium.webdriver.common.keys import Keys
+
+    # entry points:
+    # 1) title
+    # 2) url
+    # 3) faviconUrl
+
+    # get www.example.com
+    driver.get('https://www.example.com')
+    # set handler for example.com
+    example = driver.current_window_handle
+
+
+    driver.execute_cdp_cmd("Inspector.enable", {"tabId": example})
 
 
 
@@ -1394,7 +1517,6 @@ def button_input_paradox():
 
 
 
-
 # # Main Program #
 # initialize('Extensions/gtranslate')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
@@ -1404,3 +1526,4 @@ def button_input_paradox():
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
+initialize_with_dev_tools('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
