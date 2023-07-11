@@ -13,18 +13,23 @@ import os
 
 import json
 import logging
+from datetime import datetime
 
 
 
-## Logging framework
+
+# Logging framework
+# Logging framework
+# Logging framework
+
 def setup_logger(log_file):
     # Create a logger
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.ERROR)
 
     # Create a file handler and set the log level
     file_handler = logging.FileHandler(log_file)
-    file_handler.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.CRITICAL)
 
     # Create a formatter and add it to the handlers
     log_format = '%(message)s'
@@ -36,7 +41,7 @@ def setup_logger(log_file):
 
     return logger
 
-logger = setup_logger('penetration_logv2_GUI.txt')
+logger = setup_logger('PENETRATION_LOG.txt')
 
 
 def payload_logging(outcome, source, extension_id, extension_name, url_of_website, payload_type, payload, time_of_injection, time_of_alert, payload_filename, packet_info):
@@ -59,23 +64,11 @@ def payload_logging(outcome, source, extension_id, extension_name, url_of_websit
     }
 
     log_message = json.dumps(payload_log)
-    logger.info(log_message)
-
-
-
-
-
-
-
-
+    logger.critical(log_message)
 
 # Logging framework
-
-
-
-
-
-
+# Logging framework
+# Logging framework
 
 
 
@@ -87,7 +80,7 @@ def initialize(path_to_extension):
         m.update(abs_path.encode("utf-8"))
         ext_id = "".join([chr(int(i, base=16) + 97) for i in m.hexdigest()][:32])
         url_path = f"chrome-extension://{ext_id}/popup.html"
-        return url_path, abs_path
+        return url_path, abs_path, ext_id
     
     def payloads(path_to_payload):
         payload_array = []
@@ -104,7 +97,7 @@ def initialize(path_to_extension):
         
         return payload_array
 
-    url_path, abs_path = get_ext_id(path_to_extension)
+    url_path, abs_path, ext_id = get_ext_id(path_to_extension)
     payloads = payloads('payloads/extra_small_payload.txt')
 
     # initialize selenium and load extension
@@ -118,26 +111,26 @@ def initialize(path_to_extension):
 
 
     # case 1:
-    # window_name(driver, abs_path, url_path, payloads)
-    # window_name_new(driver, abs_path, url_path, payloads)
+    # window_name(driver, ext_id, url_path, payloads)
+    window_name_new(driver, ext_id, url_path, payloads)
 
     # case 2:
-    # location_href(driver, abs_path, url_path, payloads)
-    # location_href_new(driver, abs_path, url_path, payloads)
+    # location_href(driver, ext_id, url_path, payloads)
+    # location_href_new(driver, ext_id, url_path, payloads)
 
     # case 3:
-    # context_menu(driver, abs_path, url_path, payloads)
+    # context_menu(driver, ext_id, url_path, payloads)
 
     # case 4: (still doing)
 
     # case 5: 
-    # chromeTabsQuery(driver, abs_path, url_path, payloads)
+    # chromeTabsQuery(driver, ext_id, url_path, payloads)
 
     # case 6:
-    # locationSearch(driver, abs_path, url_path, payloads)
+    # locationSearch(driver, ext_id, url_path, payloads)
 
     # case 7:
-    # windowAddEventListenerMessage(driver, abs_path, url_path, payloads)
+    # windowAddEventListenerMessage(driver, ext_id, url_path, payloads)
 
 def initialize_with_dev_tools(path_to_extension):
     # obtain relevant extension information'
@@ -186,7 +179,7 @@ def initialize_with_dev_tools(path_to_extension):
 ################
 
 # 1) Window_name
-def window_name(driver, abs_path, url_path, payloads):
+def window_name(driver, ext_id, url_path, payloads):
 
     # get www.example.com
     driver.get('https://www.example.com')
@@ -218,7 +211,13 @@ def window_name(driver, abs_path, url_path, payloads):
         except TimeoutException:
             print('= No alerts detected =')
 
-def window_name_new(driver, abs_path, url_path, payloads):
+def window_name_new(driver, ext_id, url_path, payloads):
+    source = 'window.name'
+    ext_id = ext_id
+    url_of_injection_example = 'https://www.example.com'
+    url_of_injection_extension = url_path
+    payload_file = 'small_payload.txt'
+
     try:
         # Navigate to example.com
         driver.get('https://www.example.com')
@@ -246,6 +245,10 @@ def window_name_new(driver, abs_path, url_path, payloads):
 
             try:
                 driver.execute_script(f'window.name = `{payload}`;')
+
+                # get time of injection
+                time_of_injection = datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")
+
             except Exception as e:
                 print(' !!!! PAYLOAD FAILLED !!!!')
                 print('Error: ', str(e))
@@ -258,8 +261,15 @@ def window_name_new(driver, abs_path, url_path, payloads):
                 alert = driver.switch_to.alert
                 alert.accept()
                 print('[example] + Alert Detected +')
+
+                # get time of success [1) example]
+                time_of_success = datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")
+                payload_logging("SUCCESS", source, ext_id, 'h1-replacer(v3)', url_of_injection_example, 'normal', payload, time_of_injection, time_of_success, payload_file, 'nil')
+            
             except TimeoutException:
                 print('[example] = No alerts detected =')
+                payload_logging("FAILURE", source, ext_id, 'h1-replacer(v3)', url_of_injection_example, 'normal', payload, time_of_injection, 'nil', payload_file, 'nil')
+
                 
 
             driver.switch_to.window(extension)
@@ -272,9 +282,17 @@ def window_name_new(driver, abs_path, url_path, payloads):
                 WebDriverWait(driver, 2).until(EC.alert_is_present())
                 alert = driver.switch_to.alert
                 alert.accept()
+
                 print('[extension] + Alert Detected +')
+
+                # get time of success [2) extension]
+                time_of_success = datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")
+                payload_logging("SUCCESS", source, ext_id, 'h1-replacer(v3)', url_of_injection_extension, 'normal', payload, time_of_injection, time_of_success, payload_file, 'nil')
+
             except TimeoutException:
                 print('[extension] = No alerts detected =')
+                payload_logging("FAILURE", source, ext_id, 'h1-replacer(v3)', url_of_injection_extension, 'normal', payload, time_of_injection, 'nil', payload_file, 'nil')
+
 
             driver.switch_to.window(example)
 
@@ -285,9 +303,14 @@ def window_name_new(driver, abs_path, url_path, payloads):
                 alert = driver.switch_to.alert
                 alert.accept()
                 print('[example] + Alert Detected +')
+
+                # get time of success [1) example]
+                time_of_success = datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")
+                payload_logging("SUCCESS", source, ext_id, 'h1-replacer(v3)', url_of_injection_example, 'normal', payload, time_of_injection, time_of_success, payload_file, 'nil')
             except TimeoutException:
                 print('[example] = No alerts detected =')
 
+                payload_logging("FAILURE", source, ext_id, 'h1-replacer(v3)', url_of_injection_example, 'normal', payload, time_of_injection, 'nil', payload_file, 'nil')
 
             try: 
                 # check modifications for example.com
@@ -318,7 +341,7 @@ def window_name_new(driver, abs_path, url_path, payloads):
         print("An error occurred:", str(e))
 
 # 2) Location_href
-def location_href(driver, abs_path, url_path, payloads):
+def location_href(driver, ext_id, url_path, payloads):
     # get www.example.com
     driver.get('https://www.example.com')
     # set handler for example.com
@@ -353,7 +376,7 @@ def location_href(driver, abs_path, url_path, payloads):
         except:
             print('Payload failed')
 
-def location_href_new(driver, abs_path, url_path, payloads):
+def location_href_new(driver, ext_id, url_path, payloads):
     try:
         # Navigate to example.com
         driver.get('https://www.example.com')
@@ -466,9 +489,8 @@ def location_href_new(driver, abs_path, url_path, payloads):
         # Handle any other exceptions that occur
         print("An error occurred:", str(e))
 
-
 # 3) Context_Menu
-def context_menu(driver, abs_path, url_path, payloads):
+def context_menu(driver, ext_id, url_path, payloads):
     from selenium.webdriver.common.action_chains import ActionChains
     from pynput.keyboard import Controller, Key
     import urllib.parse
@@ -1046,7 +1068,7 @@ def context_menu(driver, abs_path, url_path, payloads):
  
 
 # 4) onConnect (Hvt do)
-def onConnect(driver,abs_path, url_path, paylaods):
+def onConnect(driver,ext_id, url_path, paylaods):
     print('in progress')
     payload = '''
     const extId = "lghkoafcpkdkfgmdfobfcdcgeijohgnj";
@@ -1055,7 +1077,7 @@ def onConnect(driver,abs_path, url_path, paylaods):
     '''
 
 # 5) chromeTabsQuery
-def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
+def chromeTabsQuery(driver,ext_id, url_path, payloads, variable_to_change=1):
     properties = ['favIconUrl', 'sessionId', 'title', 'url']
 
     def chromeTabQuery_title():
@@ -1269,9 +1291,8 @@ def chromeTabsQuery(driver,abs_path, url_path, payloads, variable_to_change=1):
     # case 3 favIconUrl
     # chromeTabQuery_favIconUrl()
 
-
 # 6) location.search
-def locationSearch(driver, abs_path, url_path, payloads):
+def locationSearch(driver, ext_id, url_path, payloads):
 
     # get www.example.com
     driver.get('https://www.example.com')
@@ -1303,9 +1324,8 @@ def locationSearch(driver, abs_path, url_path, payloads):
         except TimeoutException:
             print('= No alerts detected =')
 
-
 # 7) window.addEventListerner.message
-def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
+def windowAddEventListenerMessage(driver, ext_id, url_path, payloads):
     # PAYLOAD: 
     # postMessage({ message: "<img src=x onerror=alert(1)>" }, "*")
     
@@ -1365,7 +1385,7 @@ def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
 
 
 # 8) chrome.debugger.getTargets
-def chromeDebuggerGetTargets(driver, abs_path, url_path, payloads):
+def chromeDebuggerGetTargets(driver, ext_id, url_path, payloads):
     from selenium.webdriver.common.action_chains import ActionChains
     from selenium.webdriver.common.keys import Keys
 
@@ -1519,11 +1539,11 @@ def button_input_paradox():
 
 # # Main Program #
 # initialize('Extensions/gtranslate')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
-initialize_with_dev_tools('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
+# initialize_with_dev_tools('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
