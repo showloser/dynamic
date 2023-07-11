@@ -1256,21 +1256,12 @@ def windowAddEventListenerMessage(driver, abs_path, url_path, payloads):
             print('= No alerts detected =')
 
 
+def chromeDebuggerGetTargets(driver, abs_path, url_path, payloads):
+    print('cao')
 
 
 
 
-# # Main Program #
-# initialize('Extensions/gtranslate')
-
-initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
-
-# initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
 
 
 
@@ -1404,3 +1395,12 @@ def button_input_paradox():
 
 
 
+# # Main Program #
+# initialize('Extensions/gtranslate')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
+# initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
