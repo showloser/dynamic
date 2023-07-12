@@ -1396,12 +1396,6 @@ def context_menu(driver, ext_id, url_path, payloads):
             for payload in payloads:
                 for i in range(len(cases)):
                     driver.switch_to.window(example)
-                    # Reset the URL to the original URL
-
-                    # try:
-                    driver.execute_script(f"window.history.replaceState(null, null, `file:////home/showloser/localhost/dynamic/test.html`)")
-                    # except Exception as e:
-                    #     print('Error while reseting url')
 
                     # url encode xss payload 
                     encoded_payload = urllib.parse.quote(payload)
@@ -1410,7 +1404,7 @@ def context_menu(driver, ext_id, url_path, payloads):
                     if i == 0:
                         try:    
                             print('QueryParams')
-                            driver.execute_script(f"window.history.replaceState(null, null, `{driver.current_url}?qureyParam={encoded_payload}`)")
+                            driver.execute_script(f"window.history.replaceState(null, null, `{website}?qureyParam={encoded_payload}`)")
                         except Exception as e:
                             print(' !!!! PAYLOAD FAILLED !!!!')
                             print('Error: ', str(e))
@@ -1418,7 +1412,7 @@ def context_menu(driver, ext_id, url_path, payloads):
                     elif i == 1:
                         try:
                             print('FragmentIdentifier')
-                            driver.execute_script(f"window.history.replaceState(null, null, `{driver.current_url}#{encoded_payload}`)")
+                            driver.execute_script(f"window.history.replaceState(null, null, `{website}#{encoded_payload}`)")
                         except Exception as e:
                             print(' !!!! PAYLOAD FAILLED !!!!')
                             print('Error: ', str(e))
