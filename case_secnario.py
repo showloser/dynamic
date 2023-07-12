@@ -114,7 +114,7 @@ def initialize(path_to_extension):
 
     # case 1:
     # window_name(driver, ext_id, url_path, payloads)
-    # window_name_new(driver, ext_id, url_path, payloads)
+    window_name_new(driver, ext_id, url_path, payloads)
 
     # case 2:
     # location_href(driver, ext_id, url_path, payloads)
@@ -1519,9 +1519,6 @@ def context_menu(driver, ext_id, url_path, payloads):
             # Handle any other exceptions that occur
             print("An error occurred:", str(e))
 
-
-
-
     # context_menu_selectionText()
     # context_menu_selectionText_new()
 
@@ -2016,7 +2013,57 @@ def button_input_paradox():
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
 
 
 # initialize_with_dev_tools('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
+
+
+
+
+
+
+############################
+##### MULTI PROCESSING #####
+############################
+
+
+
+import multiprocessing
+
+def main(file_path):
+
+    # define number of instances to run
+    num_instances = 3
+
+    pool = multiprocessing.Pool(processes=num_instances) 
+    pool.map(initialize, [file_path] * num_instances)
+    pool.close()
+    pool.join()
+
+
+main('Extensions/h1-replacer/h1-replacer(v3)_window.name')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
