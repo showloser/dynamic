@@ -4,6 +4,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 
 from os import path
@@ -119,7 +121,7 @@ def initialize(path_to_extension):
     # location_href_new(driver, ext_id, url_path, payloads)
 
     # case 3:
-    context_menu(driver, ext_id, url_path, payloads)
+    # context_menu(driver, ext_id, url_path, payloads)
 
     # case 4: (still doing)
 
@@ -131,6 +133,10 @@ def initialize(path_to_extension):
 
     # case 7:
     # windowAddEventListenerMessage(driver, ext_id, url_path, payloads)
+
+    # case 8: 
+    # run function direclty (changes made when initlising driver)
+    chromeDebuggerGetTargets(driver, abs_path, url_path, payloads)
 
 def initialize_with_dev_tools(path_to_extension):
     # obtain relevant extension information'
@@ -491,7 +497,6 @@ def location_href_new(driver, ext_id, url_path, payloads):
 
 # 3) Context_Menu
 def context_menu(driver, ext_id, url_path, payloads):
-    from selenium.webdriver.common.action_chains import ActionChains
     from pynput.keyboard import Controller, Key
     import urllib.parse
     # entry points:
@@ -1529,7 +1534,7 @@ def context_menu(driver, ext_id, url_path, payloads):
     # context_menu_frame_url_new()
 
     # context_menu_page_url()
-    context_menu_page_url_new()
+    # context_menu_page_url_new()
  
 # 4) onConnect (Hvt do)
 def onConnect(driver,ext_id, url_path, paylaods):
@@ -1850,8 +1855,6 @@ def windowAddEventListenerMessage(driver, ext_id, url_path, payloads):
 
 # 8) chrome.debugger.getTargets
 def chromeDebuggerGetTargets(driver, ext_id, url_path, payloads):
-    from selenium.webdriver.common.action_chains import ActionChains
-    from selenium.webdriver.common.keys import Keys
 
     # entry points:
     # 1) title
@@ -1859,12 +1862,15 @@ def chromeDebuggerGetTargets(driver, ext_id, url_path, payloads):
     # 3) faviconUrl
 
     # get www.example.com
-    driver.get('https://www.example.com')
-    # set handler for example.com
-    example = driver.current_window_handle
+    # Open a webpage
+    driver.get("https://www.example.com")
+
+    driver.execute_script("window.open('', 'devtools'); window.devtools.document.location.href = 'chrome-devtools://devtools/bundled/inspector.html';")
+
+    # Switch to the DevTools tab
+    driver.switch_to.window('devtools')
 
 
-    driver.execute_cdp_cmd("Inspector.enable", {"tabId": example})
 
 
 
@@ -2006,8 +2012,11 @@ def button_input_paradox():
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
+
+
 # initialize_with_dev_tools('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
