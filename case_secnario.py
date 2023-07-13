@@ -2502,26 +2502,3 @@ initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 
 # main('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
