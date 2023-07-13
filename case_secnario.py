@@ -1583,7 +1583,7 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads, variable_to_change=1):
                 print('= No alerts detected =')
 
     def chromeTabQuery_url():
-        # Case Secnario for chromeTabQuery_Title
+        # Case Secnario for chromeTabQuery_url
 
         # get www.example.com
         driver.get('https://www.example.com')
@@ -1868,16 +1868,16 @@ def chromeDebuggerGetTargets(driver, ext_id, url_path, payloads):
         # extension = driver.current_window_handle
         # driver.get(url_path)
 
+        # get extension popup.html
         driver.get(url_path)
-
-
+        # extension = driver.current_window_handle
         extension = driver.current_window_handle
-
 
         driver.switch_to.new_window('tab')
 
-
+        # get www.example.com
         driver.get("https://www.example.com")
+        # set handler for example.com
         example = driver.current_window_handle
 
         # for payload in payloads:
@@ -1930,9 +1930,176 @@ def chromeDebuggerGetTargets(driver, ext_id, url_path, payloads):
             print('= No alerts detected =')
 
 
-    chromeDebuggerGetTargets_title()
+    def chromeDebuggerGetTargets_url():
+        # get extension popup.html
+        driver.get(url_path)
+        # extension = driver.current_window_handle
+        extension = driver.current_window_handle
+
+        driver.switch_to.new_window('tab')
+
+        # get www.example.com
+        driver.get("https://www.example.com")
+        # set handler for example.com
+        example = driver.current_window_handle
+
+        # for payload in payloads:
+
+        # change to example.com to change document.title property
+        driver.switch_to.window(example)
+        driver.refresh()
+
+        for payload in payloads:
+
+            payload = payload.strip()
+            driver.switch_to.window(example)
+
+            # change to example.com to change url property
+            driver.execute_script(f"location.href = 'https://www.example.com/?p={payload}'")
 
 
+            # change to extension:
+            driver.switch_to.window(extension)
+            driver.refresh()
+
+
+            try:
+                # wait 5 seconds to see if alert is detected
+                WebDriverWait(driver, 5).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('+ Alert Detected +')
+            except TimeoutException:
+                print('= No alerts detected =')
+
+    def chromeDebuggerGetTargets_favIconUrl():
+        def payload_generation(payloads):
+            favIconUrl_payloads = []
+
+            def check_line(line):
+                # ISSUE
+                # ISSUE: because of url encoding, if our file has ', it might not be able to access it!
+                # ISSUE
+                # forbidden_chars = ['/', '\\', ':', '*', '?', '"', '<', '>', '|', "'"]
+                forbidden_chars = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
+
+                return all(char not in line for char in forbidden_chars)
+
+            def find_lines_without_chars(filename):
+                with open(filename, 'r') as file:
+                    lines = file.readlines()
+                    lines_without_chars = [line.rstrip('\n') for line in lines if check_line(line)]
+                    return lines_without_chars
+
+            filename = 'payloads/payloads.txt'
+            lines_without_chars = find_lines_without_chars(filename)
+            for line in lines_without_chars:
+                favIconUrl_payloads.append(line)
+            
+            return favIconUrl_payloads
+
+        favIconUrl_payloads = payload_generation(payloads)
+
+
+        def rename_file_with_payloads(favIconUrl_payloads):
+
+            folder_path = "miscellaneous/favIconUrl_payload_debug"
+            files = os.listdir(folder_path)
+            if len(files) == 0:
+                print("No files found in the test folder.")
+                return
+            elif len(files) > 1:
+                print("Multiple files found in the test folder. Please ensure there is only one file.")
+                return
+
+            old_filename = os.path.join(folder_path, files[0])
+
+
+
+            new_filename = os.path.join(folder_path, favIconUrl_payloads + ".jpg")
+            os.rename(old_filename, new_filename)
+            print(f"File renamed to: {new_filename}, ")
+            old_filename = new_filename
+
+
+        def changeFavIconUrl(driver, payload):
+            # remove current favIconUrl
+            driver.execute_script("""
+            var linkElement = document.querySelector('link[rel="icon"]');
+            if (linkElement) {
+            linkElement.parentNode.removeChild(linkElement);
+            }
+            """)
+
+            # set new favIconUrl
+            driver.execute_script(f"""
+            var link = document.createElement('link');
+            link.type = 'image/jpg';
+            link.rel = 'icon';
+            link.href = 'favIconUrl_payload/{payload}.jpg';
+            document.head.appendChild(link);
+            """)
+
+        # get www.example.com
+        driver.get('file:///miscellaneous/xss_debug_website.html')
+        # set handler for example.com
+        example = driver.current_window_handle
+        # add a default favIconUrl
+        driver.execute_script("""
+        var link = document.createElement('link');
+        link.type = 'image/jpg';
+        link.rel = 'icon';
+        link.href = 'default.jpg';
+        document.head.appendChild(link);
+        """)
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+
+
+
+        for i in favIconUrl_payloads:
+            time.sleep(1)
+            driver.switch_to.window(example)
+
+            # change filename to payloads
+            rename_file_with_payloads(i)
+
+            # use filename as payload in ext
+            changeFavIconUrl(driver, i)
+
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('[FALSE] Alert Detected [FALSE]')
+            except TimeoutException:
+                print('[FALSE] No alerts detected [FALSE]')
+
+                
+            driver.switch_to.window(extension)
+
+            # use the extension
+            driver.execute_script("document.getElementById('entryPoint').value = '0';")
+            driver.execute_script("document.getElementById('submit').click();")
+
+            driver.switch_to.window(example)
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('+ Alert Detected +')
+            except TimeoutException:
+                print('= No alerts detected =')
+
+
+    # chromeDebuggerGetTargets_title()
+    # chromeDebuggerGetTargets_url()
+    chromeDebuggerGetTargets_favIconUrl()
 
 def button_input_paradox():
     from bs4 import BeautifulSoup
