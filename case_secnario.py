@@ -45,7 +45,6 @@ def setup_logger(log_file):
 
 logger = setup_logger('PENETRATION_LOG.txt')
 
-
 def payload_logging(outcome, source, extension_id, extension_name, url_of_website, payload_type, payload, time_of_injection, time_of_alert, payload_filename, packet_info):
     # Convert sets to lists
     payload = str(payload)
@@ -71,7 +70,6 @@ def payload_logging(outcome, source, extension_id, extension_name, url_of_websit
 # Logging framework
 # Logging framework
 # Logging framework
-
 
 
 def initialize(path_to_extension):
@@ -114,7 +112,7 @@ def initialize(path_to_extension):
 
     # case 1:
     # window_name(driver, ext_id, url_path, payloads)
-    window_name_new(driver, ext_id, url_path, payloads)
+    # window_name_new(driver, ext_id, url_path, payloads)
 
     # case 2:
     # location_href(driver, ext_id, url_path, payloads)
@@ -1749,7 +1747,6 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads, variable_to_change=1):
             except TimeoutException:
                 print('= No alerts detected =')
 
-
     # case 1 title:
     # chromeTabQuery_title()
     # case 2 url:
@@ -1852,28 +1849,88 @@ def windowAddEventListenerMessage(driver, ext_id, url_path, payloads):
 
 # 8) chrome.debugger.getTargets
 def chromeDebuggerGetTargets(driver, ext_id, url_path, payloads):
+    from pynput.keyboard import Controller, Key
 
     # entry points:
     # 1) title
     # 2) url
     # 3) faviconUrl
 
-    # get www.example.com
-    # Open a webpage
-    driver.get("https://www.example.com")
+    def chromeDebuggerGetTargets_title():
+        # # get www.example.com
+        # driver.get("https://www.example.com")
+        # # set handler for example.com
+        # example = driver.current_window_handle
+        
 
-    driver.execute_script("window.open('', 'devtools'); window.devtools.document.location.href = 'chrome-devtools://devtools/bundled/inspector.html';")
+        # # get extension popup.html
+        # driver.switch_to.new_window('tab')
+        # extension = driver.current_window_handle
+        # driver.get(url_path)
 
-    # Switch to the DevTools tab
-    driver.switch_to.window('devtools')
-
-
-
-
+        driver.get(url_path)
 
 
+        extension = driver.current_window_handle
 
 
+        driver.switch_to.new_window('tab')
+
+
+        driver.get("https://www.example.com")
+        example = driver.current_window_handle
+
+        # for payload in payloads:
+
+        # change to example.com to change document.title property
+        driver.switch_to.window(example)
+        driver.refresh()
+        driver.execute_script(f'document.title = `<img src=x onerror=alert(1)>`;')
+
+
+        # navigate to extension context menu option
+        keyboard = Controller()
+        # Press the F12 key to open the developer tools
+        keyboard.press(Key.f12)
+        keyboard.release(Key.f12)
+
+
+        try:
+            # wait 3 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('+ Alert Detected +')
+        except TimeoutException:
+            print('= No alerts detected =')
+
+        driver.switch_to.window(extension)
+        driver.refresh()
+
+        try:
+            # wait 3 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('+ Alert Detected +')
+        except TimeoutException:
+            print('= No alerts detected =')
+
+        driver.refresh()
+
+        driver.switch_to.window(example)
+
+        try:
+            # wait 3 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('+ Alert Detected +')
+        except TimeoutException:
+            print('= No alerts detected =')
+
+
+    chromeDebuggerGetTargets_title()
 
 
 
@@ -2013,7 +2070,7 @@ def button_input_paradox():
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
 
 
 # initialize_with_dev_tools('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
@@ -2029,20 +2086,20 @@ def button_input_paradox():
 
 
 
-import multiprocessing
+# import multiprocessing
 
-def main(file_path):
+# def main(file_path):
 
-    # define number of instances to run
-    num_instances = 3
+#     # define number of instances to run
+#     num_instances = 3
 
-    pool = multiprocessing.Pool(processes=num_instances) 
-    pool.map(initialize, [file_path] * num_instances)
-    pool.close()
-    pool.join()
+#     pool = multiprocessing.Pool(processes=num_instances) 
+#     pool.map(initialize, [file_path] * num_instances)
+#     pool.close()
+#     pool.join()
 
 
-main('Extensions/h1-replacer/h1-replacer(v3)_window.name')
+# main('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 
 
 
