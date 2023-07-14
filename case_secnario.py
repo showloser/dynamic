@@ -112,7 +112,7 @@ def initialize(path_to_extension):
 
     # case 1:
     # window_name(driver, ext_id, url_path, payloads)
-    # window_name_new(driver, ext_id, url_path, payloads)
+    window_name_new(driver, ext_id, url_path, payloads)
 
     # case 2:
     # location_href(driver, ext_id, url_path, payloads)
@@ -124,7 +124,7 @@ def initialize(path_to_extension):
     # case 4: (still doing)
 
     # case 5: 
-    chromeTabsQuery(driver, ext_id, url_path, payloads)
+    # chromeTabsQuery(driver, ext_id, url_path, payloads)
 
     # case 6:
     # locationSearch(driver, ext_id, url_path, payloads)
@@ -2485,7 +2485,7 @@ def button_input_paradox():
 
 # # Main Program #
 # initialize('Extensions/gtranslate')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
