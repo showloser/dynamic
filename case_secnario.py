@@ -136,48 +136,6 @@ def initialize(path_to_extension):
     # run function direclty (changes made when initlising driver)
     # chromeDebuggerGetTargets(driver, abs_path, url_path, payloads)
 
-def initialize_with_dev_tools(path_to_extension):
-    # obtain relevant extension information'
-    def get_ext_id(path_to_extension):
-        abs_path = path.abspath(path_to_extension)
-        m = hashlib.sha256()
-        m.update(abs_path.encode("utf-8"))
-        ext_id = "".join([chr(int(i, base=16) + 97) for i in m.hexdigest()][:32])
-        url_path = f"chrome-extension://{ext_id}/popup.html"
-        return url_path, abs_path
-    
-    def payloads(path_to_payload):
-        payload_array = []
-        try:
-            with open(path_to_payload, 'r') as file:
-                # Read the contents of the file
-                for line in file:
-                    payload = line.rstrip('\n')
-                    payload_array.append(payload)
-        except FileNotFoundError:
-            print("File not found.")
-        except IOError:
-            print("An error occurred while reading the file.")
-        
-        return payload_array
-
-    url_path, abs_path = get_ext_id(path_to_extension)
-    payloads = payloads('payloads/extra_small_payload.txt')
-
-    # initialize selenium and load extension
-    options = webdriver.ChromeOptions()
-    options.add_experimental_option('detach', True)
-    load_ext_arg = "load-extension=" + abs_path
-    options.add_argument(load_ext_arg)
-    options.add_argument("--enable-logging")
-    # options.add_argument("auto-open-devtools-for-tabs") ### OPEN DEV TOOLS
-    driver = webdriver.Chrome('./chromedriver', options=options)
-
-
-    # case 8: 
-    # run function direclty (changes made when initlising driver)
-    chromeDebuggerGetTargets(driver, abs_path, url_path, payloads)
-
 ################
 # Case Scenario#
 ################
@@ -1978,6 +1936,77 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
             except TimeoutException:
                 print('= No alerts detected =')
 
+    def chromeTabQuery_favIconUrl_new():
+
+        def payload_generation(payloads):
+            favIconUrl_payloads = []
+
+            def check_line(line):
+                # ISSUE
+                # ISSUE: because of url encoding, if our file has ', it might not be able to access it!
+                # ISSUE
+                # forbidden_chars = ['/', '\\', ':', '*', '?', '"', '<', '>', '|', "'"]
+                forbidden_chars = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
+
+                return all(char not in line for char in forbidden_chars)
+
+            def find_lines_without_chars(filename):
+                with open(filename, 'r') as file:
+                    lines = file.readlines()
+                    lines_without_chars = [line.rstrip('\n') for line in lines if check_line(line)]
+                    return lines_without_chars
+
+            filename = 'payloads/payloads.txt'
+            lines_without_chars = find_lines_without_chars(filename)
+            for line in lines_without_chars:
+                favIconUrl_payloads.append(line)
+            
+            return favIconUrl_payloads
+
+        favIconUrl_payloads = payload_generation(payloads)
+
+        def rename_file_with_payloads(favIconUrl_payloads):
+
+            folder_path = "miscellaneous/favIconUrl_payload"
+            files = os.listdir(folder_path)
+            if len(files) == 0:
+                print("No files found in the test folder.")
+                return
+            elif len(files) > 1:
+                print("Multiple files found in the test folder. Please ensure there is only one file.")
+                return
+
+            old_filename = os.path.join(folder_path, files[0])
+
+
+
+            new_filename = os.path.join(folder_path, favIconUrl_payloads + ".jpg")
+            os.rename(old_filename, new_filename)
+            print(f"File renamed to: {new_filename}, ")
+            old_filename = new_filename
+
+        def changeFavIconUrl(driver, payload):
+            # remove current favIconUrl
+            driver.execute_script("""
+            var linkElement = document.querySelector('link[rel="icon"]');
+            if (linkElement) {
+            linkElement.parentNode.removeChild(linkElement);
+            }
+            """)
+
+            # set new favIconUrl
+            driver.execute_script(f"""
+            var link = document.createElement('link');
+            link.type = 'image/jpg';
+            link.rel = 'icon';
+            link.href = 'favIconUrl_payload/{payload}.jpg';
+            document.head.appendChild(link);
+            """)
+
+
+
+
+
     # case 1 title:
     # chromeTabQuery_title()
     # chromeTabQuery_title_new()
@@ -2427,8 +2456,6 @@ def button_input_paradox():
         # Create a dictionary to store the common prefix lengths for each button
         common_prefix_lengths = {}
 
-
-
         # Compare the prefix of input ID with the button IDs
         for button_id in button_ids:
             # Find the common prefix between the input ID and button ID
@@ -2456,25 +2483,18 @@ def button_input_paradox():
         #     common_prefix_length = common_prefix_lengths[button_id]
         #     print(f"Rank {rank}: Button ID {button_id} (Common Prefix Length: {common_prefix_length})")
 
-
-
-
-
-
-
 # # Main Program #
 # initialize('Extensions/gtranslate')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
 
 
-# initialize_with_dev_tools('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
 
 
 
