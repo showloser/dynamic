@@ -116,10 +116,10 @@ def initialize(path_to_extension):
 
     # case 2:
     # location_href(driver, ext_id, url_path, payloads)
-    location_href_new(driver, ext_id, url_path, payloads)
+    # location_href_new(driver, ext_id, url_path, payloads)
 
     # case 3:
-    # context_menu(driver, ext_id, url_path, payloads)
+    context_menu(driver, ext_id, url_path, payloads)
 
     # case 4: (still doing)
 
@@ -1556,7 +1556,7 @@ def context_menu(driver, ext_id, url_path, payloads):
             print("An error occurred:", str(e))
 
     # context_menu_selectionText()
-    # context_menu_selectionText_new()
+    context_menu_selectionText_new()
 
     # context_menu_link_url()
     # context_menu_link_url_new()
@@ -2566,9 +2566,9 @@ def button_input_paradox():
 # # Main Program #
 # initialize('Extensions/gtranslate')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
