@@ -1556,7 +1556,7 @@ def context_menu(driver, ext_id, url_path, payloads):
             print("An error occurred:", str(e))
 
     # context_menu_selectionText()
-    context_menu_selectionText_new()
+    # context_menu_selectionText_new()
 
     # context_menu_link_url()
     # context_menu_link_url_new()
@@ -1564,7 +1564,7 @@ def context_menu(driver, ext_id, url_path, payloads):
     # context_menu_src_url()
 
     # context_menu_frame_url()  
-    # context_menu_frame_url_new()
+    context_menu_frame_url_new()
 
     # context_menu_page_url()
     # context_menu_page_url_new()
