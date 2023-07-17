@@ -119,12 +119,12 @@ def initialize(path_to_extension):
     # location_href_new(driver, ext_id, url_path, payloads)
 
     # case 3:
-    context_menu(driver, ext_id, url_path, payloads)
+    # context_menu(driver, ext_id, url_path, payloads)
 
     # case 4: (still doing)
 
     # case 5: 
-    # chromeTabsQuery(driver, ext_id, url_path, payloads)
+    chromeTabsQuery(driver, ext_id, url_path, payloads)
 
     # case 6:
     # locationSearch(driver, ext_id, url_path, payloads)
@@ -1890,8 +1890,8 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
             # Handle any other exceptions that occur
             print("An error occurred:", str(e))
 
-
     def chromeTabQuery_favIconUrl():
+        pid = [1,2,3]
 
         def payload_generation(payloads):
             favIconUrl_payloads = []
@@ -1920,7 +1920,6 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
 
         favIconUrl_payloads = payload_generation(payloads)
 
-
         def rename_file_with_payloads(favIconUrl_payloads):
 
             folder_path = "miscellaneous/favIconUrl_payload"
@@ -1933,8 +1932,6 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
                 return
 
             old_filename = os.path.join(folder_path, files[0])
-
-
 
             new_filename = os.path.join(folder_path, favIconUrl_payloads + ".jpg")
             os.rename(old_filename, new_filename)
@@ -1978,8 +1975,6 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
         extension = driver.current_window_handle
         driver.get(url_path)
 
-
-
         for i in favIconUrl_payloads:
             time.sleep(1)
             driver.switch_to.window(example)
@@ -2016,7 +2011,8 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
             except TimeoutException:
                 print('= No alerts detected =')
 
-    def chromeTabQuery_favIconUrl_new():
+
+    def chromeTabQuery_favIconUrl_new(pid):
 
         def payload_generation(payloads):
             favIconUrl_payloads = []
@@ -2084,6 +2080,140 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
             """)
 
 
+    def faviconUrl(pid):
+        import shutil
+        def create_directory(number):
+            directory_name = f'FavIconUrl/favIconUrl_payload_{number}'
+            if not os.path.exists(directory_name):
+                os.makedirs(directory_name)
+                return True  # Directory was created
+            else:
+                print(f"Directory already exists: {directory_name}")
+                return False  # Directory already existed
+            
+        def copy_picture_to_directory(picture_path, directory):
+            shutil.copy2(picture_path, directory)
+
+        def access_directory(number):
+            directory_name = f'FavIconUrl/favIconUrl_payload_{number}'
+            picture_path = 'miscellaneous/default.jpg'  # Specify the path of the picture you want to copy
+
+            if create_directory(number):
+                if os.path.exists(picture_path):
+                    copy_picture_to_directory(picture_path, directory_name)
+                    print(f"Picture copied to directory: {directory_name}")
+                else:
+                    print("Picture path doesn't exist!")
+
+        def rename_file_with_payloads(pid,payload):
+            directory_name = f'FavIconUrl/favIconUrl_payload_{pid}'
+
+            files = os.listdir(directory_name)
+            if len(files) == 0:
+                print("No files found in the test folder.")
+                return
+            elif len(files) > 1:
+                print("Multiple files found in the test folder. Please ensure there is only one file.")
+                return
+
+            old_filename = os.path.join(directory_name, files[0])
+
+            new_filename = os.path.join(directory_name, payload + ".jpg")
+            os.rename(old_filename, new_filename)
+            print(f"File renamed to: {new_filename}, ")
+            old_filename = new_filename
+
+        def changeFavIconUrl(driver, number ,payload):
+            # remove current favIconUrl
+            driver.execute_script("""
+            var linkElement = document.querySelector('link[rel="icon"]');
+            if (linkElement) {
+            linkElement.parentNode.removeChild(linkElement);
+            }
+            """)
+
+            # set new favIconUrl
+            driver.execute_script(f"""
+            var link = document.createElement('link');
+            link.type = 'image/jpg';
+            link.rel = 'icon';
+            link.href = '../FavIconUrl/favIconUrl_payload_{number}/{payload}.jpg';
+            document.head.appendChild(link);
+            """)
+
+
+        # preconfigure files required
+        access_directory(pid)
+
+
+
+        print(payloads)
+
+
+        # get www.example.com
+        driver.get('file:///home/showloser/dynamic/miscellaneous/xss_website.html')
+        # set handler for example.com
+        example = driver.current_window_handle
+        # add a default favIconUrl
+        driver.execute_script("""
+        var link = document.createElement('link');
+        link.type = 'image/jpg';
+        link.rel = 'icon';
+        link.href = 'default.jpg';
+        document.head.appendChild(link);
+        """)
+
+        # get extension popup.html
+        driver.switch_to.new_window('tab')
+        extension = driver.current_window_handle
+        driver.get(url_path)
+
+        
+        for payload in payloads:
+
+            # forbidden_chars = ['/', '\\', ':', '*', '?', '"', '<', '>', '|', "'"]
+            forbidden_chars = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
+            # skip payloads that contain forbidden_chars
+            if any(char in payload for char in forbidden_chars):
+                continue
+
+            driver.switch_to.window(example)
+
+            # change filename to payloads
+            rename_file_with_payloads(pid,payload)
+
+            # use filename as payload in ext
+            changeFavIconUrl(driver, pid, payload)
+
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('[TRUE] Alert Detected [TRUE]')
+            except TimeoutException:
+                print('[FALSE] No alerts detected [FALSE]')
+
+                
+            driver.switch_to.window(extension)
+
+            # use the extension
+            driver.execute_script("document.getElementById('entryPoint').value = '0';")
+            driver.execute_script("document.getElementById('submit').click();")
+
+            driver.switch_to.window(example)
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('+ Alert Detected +')
+            except TimeoutException:
+                print('= No alerts detected =')
+
+
+
+
 
 
 
@@ -2093,9 +2223,11 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
 
     # case 2 url:
     # chromeTabQuery_url()
-    chromeTabQuery_url_new()
+    # chromeTabQuery_url_new()
     # case 3 favIconUrl
-    # chromeTabQuery_favIconUrl()
+    chromeTabQuery_favIconUrl()
+
+    # faviconUrl(4)
 
 # 6) location.search
 def locationSearch(driver, ext_id, url_path, payloads):
@@ -2563,13 +2695,16 @@ def button_input_paradox():
         #     common_prefix_length = common_prefix_lengths[button_id]
         #     print(f"Rank {rank}: Button ID {button_id} (Common Prefix Length: {common_prefix_length})")
 
+
+
+
 # # Main Program #
 # initialize('Extensions/gtranslate')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
