@@ -119,12 +119,12 @@ def initialize(path_to_extension):
     # location_href_new(driver, ext_id, url_path, payloads)
 
     # case 3:
-    # context_menu(driver, ext_id, url_path, payloads)
+    context_menu(driver, ext_id, url_path, payloads)
 
     # case 4: (still doing)
 
     # case 5: 
-    chromeTabsQuery(driver, ext_id, url_path, payloads)
+    # chromeTabsQuery(driver, ext_id, url_path, payloads)
 
     # case 6:
     # locationSearch(driver, ext_id, url_path, payloads)
@@ -1070,8 +1070,10 @@ def context_menu(driver, ext_id, url_path, payloads):
 
     # Src Url [GUI]
     def context_menu_src_url():
+        import subprocess
+
         # get www.example.com
-        driver.get('file:////home/showloser/localhost/dynamic/test.html')
+        driver.get('file:///home/showloser/dynamic/miscellaneous/xss_website.html')
         # set handler for example.com
         example = driver.current_window_handle
 
@@ -1082,8 +1084,10 @@ def context_menu(driver, ext_id, url_path, payloads):
     
 
         for payload in payloads:
+            print(payload)
 
             driver.switch_to.window(example)
+            driver.refresh()
             target_element = driver.find_element(By.ID, 'srcUrl')
             # driver.execute_script("var range = document.createRange(); range.selectNode(arguments[0]); console.log(range);window.getSelection().addRange(range);", target_element)
 
@@ -1092,22 +1096,38 @@ def context_menu(driver, ext_id, url_path, payloads):
             # # perform right click to open context menu
             actions = ActionChains(driver)
 
-            actions.drag_and_drop_by_offset(actions.move_to_element_with_offset(target_element,50,0).release().perform(), -80,0).context_click().perform()
+            actions.drag_and_drop_by_offset(actions.move_to_element_with_offset(target_element,50,0).release().perform(), -50,0)
+
+            print('context.click')
+            actions.move_to_element_with_offset(target_element, 25,0).context_click().perform()
+            print('context.click')
 
             # navigate to extension context menu option
             time.sleep(1)
-            keyboard = Controller()
-            for _ in range(7):  
-                # Press the arrow key down
-                keyboard.press(Key.down)
-                # Release the arrow key
-                keyboard.release(Key.down)
+            # print('controller')
+            # keyboard = Controller()
+            # for _ in range(7):  
+            #     # Press the arrow key down
+            #     keyboard.press(Key.down)
+            #     # Release the arrow key
+            #     keyboard.release(Key.down)
 
-            # Press the Enter key
-            keyboard.press(Key.enter)
-            # Release the Enter key
-            keyboard.release(Key.enter)
-            
+            # time.sleep(1)
+            # # Press the Enter key
+            # keyboard.press(Key.enter)
+            # # Release the Enter key
+            # keyboard.release(Key.enter)
+            # print('controller')
+            for _ in range(7):
+                subprocess.call(['xdotool', 'key', 'Down'])
+
+            # Simulate pressing the "Enter" key
+            subprocess.call(['xdotool', 'key', 'Return'])
+
+
+
+
+
             try:
                 # wait 2 seconds to see if alert is detected
                 WebDriverWait(driver, 2).until(EC.alert_is_present())
@@ -1117,8 +1137,26 @@ def context_menu(driver, ext_id, url_path, payloads):
             except TimeoutException:
                 print('= No alerts detected =')
             
+
+
             driver.switch_to.window(extension)
-            time.sleep(2)
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('+ Alert Detected +')
+            except TimeoutException:
+                print('= No alerts detected =')
+
+
+
+
+
+
+
+
+
 
     # Frame Url [GUI]
     def context_menu_frame_url():
@@ -1561,10 +1599,10 @@ def context_menu(driver, ext_id, url_path, payloads):
     # context_menu_link_url()
     # context_menu_link_url_new()
 
-    # context_menu_src_url()
+    context_menu_src_url()
 
     # context_menu_frame_url()  
-    context_menu_frame_url_new()
+    # context_menu_frame_url_new()
 
     # context_menu_page_url()
     # context_menu_page_url_new()
@@ -2634,8 +2672,8 @@ def button_input_paradox():
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
