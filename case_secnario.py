@@ -1952,13 +1952,13 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
             var link = document.createElement('link');
             link.type = 'image/jpg';
             link.rel = 'icon';
-            link.href = 'favIconUrl_payload/{payload}.jpg';
+            link.href = './favIconUrl_payload_debug/test.jpg';
             document.head.appendChild(link);
             """)
 
 
         # get www.example.com
-        driver.get('file:///home/showloser/localhost/dynamic/miscellaneous/xss_website.html')
+        driver.get('file:///home/showloser/dynamic/miscellaneous/xss_website.html')
         # set handler for example.com
         example = driver.current_window_handle
         # add a default favIconUrl
@@ -2010,75 +2010,6 @@ def chromeTabsQuery(driver,ext_id, url_path, payloads):
                 print('+ Alert Detected +')
             except TimeoutException:
                 print('= No alerts detected =')
-
-
-    def chromeTabQuery_favIconUrl_new(pid):
-
-        def payload_generation(payloads):
-            favIconUrl_payloads = []
-
-            def check_line(line):
-                # ISSUE
-                # ISSUE: because of url encoding, if our file has ', it might not be able to access it!
-                # ISSUE
-                # forbidden_chars = ['/', '\\', ':', '*', '?', '"', '<', '>', '|', "'"]
-                forbidden_chars = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
-
-                return all(char not in line for char in forbidden_chars)
-
-            def find_lines_without_chars(filename):
-                with open(filename, 'r') as file:
-                    lines = file.readlines()
-                    lines_without_chars = [line.rstrip('\n') for line in lines if check_line(line)]
-                    return lines_without_chars
-
-            filename = 'payloads/payloads.txt'
-            lines_without_chars = find_lines_without_chars(filename)
-            for line in lines_without_chars:
-                favIconUrl_payloads.append(line)
-            
-            return favIconUrl_payloads
-
-        favIconUrl_payloads = payload_generation(payloads)
-
-        def rename_file_with_payloads(favIconUrl_payloads):
-
-            folder_path = "miscellaneous/favIconUrl_payload"
-            files = os.listdir(folder_path)
-            if len(files) == 0:
-                print("No files found in the test folder.")
-                return
-            elif len(files) > 1:
-                print("Multiple files found in the test folder. Please ensure there is only one file.")
-                return
-
-            old_filename = os.path.join(folder_path, files[0])
-
-
-
-            new_filename = os.path.join(folder_path, favIconUrl_payloads + ".jpg")
-            os.rename(old_filename, new_filename)
-            print(f"File renamed to: {new_filename}, ")
-            old_filename = new_filename
-
-        def changeFavIconUrl(driver, payload):
-            # remove current favIconUrl
-            driver.execute_script("""
-            var linkElement = document.querySelector('link[rel="icon"]');
-            if (linkElement) {
-            linkElement.parentNode.removeChild(linkElement);
-            }
-            """)
-
-            # set new favIconUrl
-            driver.execute_script(f"""
-            var link = document.createElement('link');
-            link.type = 'image/jpg';
-            link.rel = 'icon';
-            link.href = 'favIconUrl_payload/{payload}.jpg';
-            document.head.appendChild(link);
-            """)
-
 
     def faviconUrl(pid):
         import shutil
