@@ -1149,15 +1149,6 @@ def context_menu(driver, ext_id, url_path, payloads):
             except TimeoutException:
                 print('= No alerts detected =')
 
-
-
-
-
-
-
-
-
-
     # Frame Url [GUI]
     def context_menu_frame_url():
         # get www.example.com
@@ -1597,9 +1588,9 @@ def context_menu(driver, ext_id, url_path, payloads):
     # context_menu_selectionText_new()
 
     # context_menu_link_url()
-    # context_menu_link_url_new()
+    context_menu_link_url_new()
 
-    context_menu_src_url()
+    # context_menu_src_url()
 
     # context_menu_frame_url()  
     # context_menu_frame_url_new()
