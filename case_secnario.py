@@ -119,7 +119,7 @@ def initialize(path_to_extension):
     # location_href_new(driver, ext_id, url_path, payloads)
 
     # case 3:
-    context_menu(driver, ext_id, url_path, payloads)
+    # context_menu(driver, ext_id, url_path, payloads)
 
     # case 4: (still doing)
 
@@ -134,7 +134,7 @@ def initialize(path_to_extension):
 
     # case 8: 
     # run function direclty (changes made when initlising driver)
-    # chromeDebuggerGetTargets(driver, abs_path, url_path, payloads)
+    chromeDebuggerGetTargets(driver, abs_path, url_path, payloads)
 
 ################
 # Case Scenario#
@@ -1588,7 +1588,7 @@ def context_menu(driver, ext_id, url_path, payloads):
     # context_menu_selectionText_new()
 
     # context_menu_link_url()
-    context_menu_link_url_new()
+    # context_menu_link_url_new()
 
     # context_menu_src_url()
 
@@ -1596,7 +1596,7 @@ def context_menu(driver, ext_id, url_path, payloads):
     # context_menu_frame_url_new()
 
     # context_menu_page_url()
-    # context_menu_page_url_new()
+    context_menu_page_url_new()
  
 # 4) onConnect (Hvt do)
 def onConnect(driver,ext_id, url_path, paylaods):
@@ -2360,9 +2360,13 @@ def chromeDebuggerGetTargets(driver, ext_id, url_path, payloads):
             WebDriverWait(driver, 2).until(EC.alert_is_present())
             alert = driver.switch_to.alert
             alert.accept()
+
+
             print('+ Alert Detected +')
         except TimeoutException:
             print('= No alerts detected =')
+
+        print('lol')
 
 
     def chromeDebuggerGetTargets_url():
@@ -2533,8 +2537,8 @@ def chromeDebuggerGetTargets(driver, ext_id, url_path, payloads):
 
 
     # chromeDebuggerGetTargets_title()
-    # chromeDebuggerGetTargets_url()
-    chromeDebuggerGetTargets_favIconUrl()
+    chromeDebuggerGetTargets_url()
+    # chromeDebuggerGetTargets_favIconUrl()
 
 def button_input_paradox():
     from bs4 import BeautifulSoup
@@ -2663,11 +2667,11 @@ def button_input_paradox():
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location.href')
 # initialize('Extensions/h1-replacer/h1-replacer_button_paradox')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_context_menu')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
-# initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
+initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
 
 
 
