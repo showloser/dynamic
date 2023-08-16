@@ -6,7 +6,9 @@ from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-
+from selenium.webdriver import ActionChains, Chrome
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import Select
 
 from os import path
 import hashlib
@@ -106,7 +108,7 @@ def initialize(path_to_extension):
     load_ext_arg = "load-extension=" + abs_path
     options.add_argument(load_ext_arg)
     options.add_argument("--enable-logging")
-    driver = webdriver.Chrome('./chromedriver', options=options)
+    # driver = webdriver.Chrome('./chromedriver', options=options)
 
 
 
@@ -132,9 +134,13 @@ def initialize(path_to_extension):
     # case 7:
     # windowAddEventListenerMessage(driver, ext_id, url_path, payloads)
 
-    # case 8: 
-    # run function direclty (changes made when initlising driver)
-    chromeDebuggerGetTargets(driver, abs_path, url_path, payloads)
+    # # case 8: 
+    # # run function direclty (changes made when initlising driver)
+    # chromeDebuggerGetTargets(driver, abs_path, url_path, payloads)
+
+
+    paradox(options, ext_id, url_path, payloads)
+
 
 ################
 # Case Scenario#
@@ -2661,6 +2667,172 @@ def button_input_paradox():
 
 
 
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+
+def paradox(option, ext_id, url_path, payloads):
+    payload = 'XSS'
+    driver = Chrome(service=Service(), options=option)
+
+    # get www.example.com
+    driver.get('https://www.example.com')
+    # set handler for example.com
+    example = driver.current_window_handle
+    # get page source code of example.com
+    example_source_code = driver.page_source
+
+    # get extension popup.html
+    driver.switch_to.new_window('tab')
+    extension = driver.current_window_handle
+    driver.get(url_path)
+
+    # get page source code of extension
+    extension_source_code = driver.page_source
+
+    def find_input_elements():
+        elements = []
+        # Find all <input> elements
+        elements.extend(driver.find_elements(By.TAG_NAME, 'input'))
+        # Find all <textarea> elements
+        elements.extend(driver.find_elements(By.TAG_NAME, 'textarea'))
+        # Find all <select> elements
+        elements.extend(driver.find_elements(By.TAG_NAME, 'select'))
+        return elements
+    
+    for payload in payloads:
+
+        elements = find_input_elements()
+
+        # fill up entire form. (for input type=file, dk should ignore or actually give a file (maybe can give a txt) )
+        try:
+            for element in elements:
+                # print(element.get_attribute('type'))
+                match element.get_attribute('type'):
+                    case 'text':
+                        element.send_keys(payload)
+                    case 'textarea':
+                        element.send_keys(payload)
+                    case 'password':
+                        element.send_keys(payload)
+                    case 'textarea':
+                        element.send_keys(payload)
+                    case 'checkbox':
+                        if not element.is_selected():
+                            element.click()
+                    case 'radio':
+                        if not element.is_selected():
+                            element.click()
+                    case 'reset':
+                        pass
+                    case 'button':
+                        pass
+                    case 'file':
+                        pass
+                    case 'date':
+                        # some random date
+                        element.send_keys('2023-08-16')
+                    case 'time':
+                        # some random time
+                        element.send_keys('15:30')
+                    case 'number':
+                        # some random number
+                        element.send_keys('69')
+                    case 'email':
+                        # some random email
+                        element.send_keys('scanext@gmail.com')
+                    case 'url':
+                        # some random url
+                        element.send_keys('https://scanext.com')
+                    case 'tel':
+                        # some random tel
+                        element.send_keys('999')
+                    case 'color':
+                        pass
+                    case 'range':
+                        pass
+                    case 'hidden':
+                        pass
+                    case 'search':
+                        element.send_keys(payload)
+                    case 'image':
+                        pass
+                    case 'month':
+                        # some random month
+                        element.send_keys('2023-08')
+                    case 'week':
+                        # some random week
+                        element.send_keys('2023-W33')
+                    case 'datetime-local':
+                        # some random month
+                        element.send_keys('2023-08-16T15:30')
+                    case 'select-one':
+                        select = Select(element)
+                        select.select_by_index(0)
+                        pass
+                    case default:
+                        pass
+            
+            # submit form
+            element.submit()
+        except Exception as e:
+            print(str(e))
+            pass
+
+        try:
+            # wait 2 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('[example] + Alert Detected +')
+        except TimeoutException:
+            print('[example] = No alerts detected =')
+
+            driver.switch_to.window(extension)
+            driver.refresh()
+            driver.switch_to.window(example)
+
+            try:
+                # wait 2 seconds to see if alert is detected
+                WebDriverWait(driver, 2).until(EC.alert_is_present())
+                alert = driver.switch_to.alert
+                alert.accept()
+                print('[example] + Alert Detected +')
+            except TimeoutException:
+                print('[example] = No alerts detected =')
+
+
+        # check modifications for example
+        driver.switch_to.window(example)
+        if example_source_code != driver.page_source:
+            driver.get('https://www.example.com')
+
+        # check modifications for extension
+        driver.switch_to.window(extension)
+        if extension_source_code != driver.page_source:
+            driver.get(url_path)
+        
+
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW
+
 
 # # Main Program #
 # initialize('Extensions/gtranslate')
@@ -2671,7 +2843,9 @@ def button_input_paradox():
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_chrome_tab_query')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_location_search')
 # initialize('Extensions/h1-replacer/h1-replacer(v3)_window.addEventListernerMessage')
-initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
+# initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
+
+initialize('Extensions/paradox')
 
 
 
@@ -2680,24 +2854,6 @@ initialize('Extensions/h1-replacer/h1-replacer(v3)_chromeDebuggerGetTarget')
 
 
 
-############################
-##### MULTI PROCESSING #####
-############################
 
 
-
-# import multiprocessing
-
-# def main(file_path):
-
-#     # define number of instances to run
-#     num_instances = 3
-
-#     pool = multiprocessing.Pool(processes=num_instances) 
-#     pool.map(initialize, [file_path] * num_instances)
-#     pool.close()
-#     pool.join()
-
-
-# main('Extensions/h1-replacer/h1-replacer(v3)_window.name')
 

